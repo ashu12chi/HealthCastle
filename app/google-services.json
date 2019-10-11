@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "432626004033",
+    "firebase_url": "https://healthcastle-35d9d.firebaseio.com",
+    "project_id": "healthcastle-35d9d",
+    "storage_bucket": "healthcastle-35d9d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:432626004033:android:9d91de26b9b2f7a33f16c0",
+        "android_client_info": {
+          "package_name": "com.npdevs.healthcastle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "432626004033-gqr19klq2t6a4skrqfga3ntlqk66nqoq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.npdevs.healthcastle",
+            "certificate_hash": "46627ccb7d8bb332648457a04f09ca95393b9ff9"
+          }
+        },
+        {
+          "client_id": "432626004033-go2mlj8a15i49ekqq0fnjlsobs0qikpl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYGGwcO3A-Kvf3xL7kr4-p9lSd_oxTyU4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "432626004033-go2mlj8a15i49ekqq0fnjlsobs0qikpl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
