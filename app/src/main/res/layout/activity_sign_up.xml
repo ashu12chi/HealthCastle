@@ -18,7 +18,7 @@
 		app:layout_constraintHorizontal_bias="0.5"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintVertical_bias="0.024">
+		app:layout_constraintVertical_bias="0.02">
 
 		<com.google.android.material.textfield.TextInputEditText
 			android:id="@+id/editText"
@@ -39,7 +39,7 @@
 		app:layout_constraintHorizontal_bias="0.5"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintVertical_bias="0.144">
+		app:layout_constraintVertical_bias="0.12">
 
 		<com.google.android.material.textfield.TextInputEditText
 			android:id="@+id/editText2"
@@ -60,7 +60,7 @@
 		app:layout_constraintHorizontal_bias="0.5"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintVertical_bias="0.264"
+		app:layout_constraintVertical_bias="0.22"
 		app:passwordToggleEnabled="true">
 
 		<com.google.android.material.textfield.TextInputEditText
@@ -84,7 +84,7 @@
 		app:layout_constraintHorizontal_bias="0.5"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintVertical_bias="0.384">
+		app:layout_constraintVertical_bias="0.32">
 
 		<com.google.android.material.textfield.TextInputEditText
 			android:id="@+id/editText4"
@@ -105,7 +105,7 @@
 		app:layout_constraintHorizontal_bias="0.5"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintVertical_bias="0.504">
+		app:layout_constraintVertical_bias="0.42">
 
 		<com.google.android.material.textfield.TextInputEditText
 			android:id="@+id/editText5"
@@ -126,7 +126,7 @@
 		app:layout_constraintHorizontal_bias="0.5"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintVertical_bias="0.624">
+		app:layout_constraintVertical_bias="0.52">
 
 		<com.google.android.material.textfield.TextInputEditText
 			android:id="@+id/editText6"
@@ -147,7 +147,7 @@
 		app:layout_constraintHorizontal_bias="0.504"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintVertical_bias="0.744">
+		app:layout_constraintVertical_bias="0.62">
 
 		<com.google.android.material.textfield.TextInputEditText
 			android:id="@+id/editText7"
@@ -155,6 +155,26 @@
 			android:layout_height="50dp"
 			android:hint="Sex"
 			android:inputType="textCapCharacters" />
+	</com.google.android.material.textfield.TextInputLayout>
+
+	<com.google.android.material.textfield.TextInputLayout
+		android:id="@+id/name_text_input9"
+		style="@style/AppTextLayout"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:errorEnabled="true"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintHorizontal_bias="0.5"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintVertical_bias="0.72">
+
+		<com.google.android.material.textfield.TextInputEditText
+			android:id="@+id/editText9"
+			android:layout_width="300dp"
+			android:layout_height="50dp"
+			android:hint="City" />
 	</com.google.android.material.textfield.TextInputLayout>
 
 	<com.google.android.material.textfield.TextInputLayout
@@ -168,7 +188,7 @@
 		app:layout_constraintHorizontal_bias="0.5"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintVertical_bias="0.864">
+		app:layout_constraintVertical_bias="0.82">
 
 		<com.google.android.material.textfield.TextInputEditText
 			android:id="@+id/editText8"

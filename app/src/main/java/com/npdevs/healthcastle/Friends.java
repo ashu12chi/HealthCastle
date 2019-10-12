@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +20,7 @@ public class Friends extends AppCompatActivity {
     private String MOB;
     private TextView name,heartStats,stepStats,calorieStats;
     private DatabaseReference databaseReference;
-    private Button doctors;
+    private Button doctors,chat,pharmacy,diagnostics;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +28,9 @@ public class Friends extends AppCompatActivity {
         MOB = getIntent().getStringExtra("MOB");
         name = findViewById(R.id.name);
         doctors = findViewById(R.id.button9);
+        chat = findViewById(R.id.button11);
+        pharmacy = findViewById(R.id.button12);
+        diagnostics = findViewById(R.id.button13);
         heartStats = findViewById(R.id.textView14);
         stepStats = findViewById(R.id.textView15);
         calorieStats = findViewById(R.id.textView16);
@@ -71,8 +75,28 @@ public class Friends extends AppCompatActivity {
         doctors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Friends.this,Doctors.class);
-                intent.putExtra("MOB_NUMBER",MOB);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.practo.com/doctors"));
+                startActivity(intent);
+            }
+        });
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.practo.com/consult"));
+                startActivity(intent);
+            }
+        });
+        diagnostics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.practo.com/tests"));
+                startActivity(intent);
+            }
+        });
+        pharmacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.practo.com/order?utm_source=practonavbar&utm_medium=referral&utm_campaign=practonavbarredirect"));
                 startActivity(intent);
             }
         });

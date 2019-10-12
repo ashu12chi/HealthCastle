@@ -9,7 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Doctors"></activity>
         <activity android:name=".Friends" />
         <activity android:name=".Connections" />
         <activity android:name=".EditProfile" />

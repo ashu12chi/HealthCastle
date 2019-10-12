@@ -37,11 +37,11 @@ import java.util.concurrent.TimeUnit;
 public class SignUp extends AppCompatActivity {
 
 	private Button signup,getOTP;
-	private EditText name,mobNumber,password,age,weight,height,sex,otp;
+	private EditText name,mobNumber,password,age,weight,height,sex,city,otp;
 	private FirebaseAuth mAuth;
 	private ProgressDialog progressDialog;
 	private String codeSent;
-	private TextInputLayout nameLay,mobLay,passLay,ageLay,weightLay,heightLay,sexLay,otpLay;
+	private TextInputLayout nameLay,mobLay,passLay,ageLay,weightLay,heightLay,sexLay,cityLay,otpLay;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,6 +61,7 @@ public class SignUp extends AppCompatActivity {
 		height=findViewById(R.id.editText6);
 		sex=findViewById(R.id.editText7);
 		otp = findViewById(R.id.editText8);
+		city=findViewById(R.id.editText9);
 
 		nameLay=findViewById(R.id.name_text_input1);
 		mobLay=findViewById(R.id.name_text_input2);
@@ -69,6 +70,7 @@ public class SignUp extends AppCompatActivity {
 		weightLay=findViewById(R.id.name_text_input5);
 		heightLay=findViewById(R.id.name_text_input6);
 		sexLay=findViewById(R.id.name_text_input7);
+		cityLay=findViewById(R.id.name_text_input9);
 		otpLay=findViewById(R.id.name_text_input8);
 
 		FirebaseApp.initializeApp(this);
@@ -165,6 +167,7 @@ public class SignUp extends AppCompatActivity {
 					int height1=Integer.parseInt(height.getText().toString());
 					char sex1=sex.getText().toString().charAt(0);
 					int sex2=sex1=='M'?1:0;
+					String city1=city.getText().toString();
 					MessageDigest digest = null;
 					try {
 						digest = MessageDigest.getInstance("SHA-256");
@@ -178,7 +181,7 @@ public class SignUp extends AppCompatActivity {
 					first.add(0);
 					ArrayList<String> second=new ArrayList<>(1);
 					second.add("no");
-					final Users users = new Users(name1,mobNumber1,password1,age1,weight1,height1,sex2,first,first,first,second);
+					final Users users = new Users(name1,mobNumber1,password1,age1,weight1,height1,sex2,city1,first,first,first,first,first,second);
 					databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
 						@Override
 						public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
