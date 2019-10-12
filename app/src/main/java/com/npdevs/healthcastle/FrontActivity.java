@@ -1,6 +1,8 @@
 package com.npdevs.healthcastle;
 
 import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -10,10 +12,12 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,11 +26,19 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -65,6 +77,8 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_front);
 		MOB_NUMBER=getIntent().getStringExtra("MOB_NUMBER");
+
+		checkFamilyHealth();
 
 		sensorManager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
 		loadUserData();
@@ -498,4 +512,75 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 	private void speak(String string) {
 		textToSpeech.speak(String.valueOf(string), TextToSpeech.QUEUE_ADD, null);
 	}
+
+	private void checkFamilyHealth() {
+		final DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("users");
+		databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+				Users user=dataSnapshot.child(MOB_NUMBER).getValue(Users.class);
+				assert user != null;
+				ArrayList<String> family=user.getFamily();
+				for(int i=1;i<family.size();i++) {
+					Users member=dataSnapshot.child(family.get(i)).getValue(Users.class);
+					assert member != null;
+					int sugar=100,systole=100;
+					if(member.getSugar().size()>1)
+						sugar = member.getSugar().get(member.getSugar().size()-1);
+					if(member.getBloodpressure().size()>1) {
+						String heart = member.getBloodpressure().get(member.getBloodpressure().size() - 1);
+						systole = Integer.parseInt(heart.substring(heart.indexOf('-') + 1));
+					}
+					if(sugar>120 || sugar<55 || systole<90 || systole>180) {
+						createNotificationChannel();
+						notification(family.get(i),member);
+					}
+				}
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError) {
+				Log.e("NSP","Some error occurred while checking person connections");
+			}
+		});
+	}
+
+	private void createNotificationChannel() {
+		// Create the NotificationChannel, but only on API 26+ because
+		// the NotificationChannel class is new and not in the support library
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			//CharSequence name = getString(R.string.channel_name);
+			//String description = getString(R.string.channel_description);
+			int importance = NotificationManager.IMPORTANCE_HIGH;
+			NotificationChannel channel = new NotificationChannel("Unhealthy person notify", "Unhealthy person notify", importance);
+			//channel.setDescription(description);
+			channel.enableVibration(true);
+			channel.enableLights(true);
+			// Register the channel with the system; you can't change the importance
+			// or other notification behaviors after this
+			NotificationManager notificationManager = getSystemService(NotificationManager.class);
+			notificationManager.createNotificationChannel(channel);
+		}
+	}
+	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+	private void notification(String mob,Users user) {
+		Intent intent = new Intent(this, Friends.class);
+		intent.putExtra("MOB", mob);
+		PendingIntent pendingintent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		//PendingIntent pendingintent = stackBuilder.getPendingIntent(0 , PendingIntent.FLAG_UPDATE_CURRENT);
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "Unhealthy person notify")
+				.setSmallIcon(R.mipmap.ic_launcher_round)
+				.setAutoCancel(true)
+				.setContentTitle(user.getName()+" is unhealthy")
+				.setContentText("Large vary from standard data")
+				.setDefaults(NotificationCompat.DEFAULT_VIBRATE)
+				.setPriority(NotificationCompat.PRIORITY_MAX)
+				.setStyle(new NotificationCompat.BigTextStyle()
+						.bigText("Tap to see stats..."))
+				.setContentIntent(pendingintent);
+		NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+// notificationId is a unique int for each notification that you must define
+		notificationManager.notify(12, builder.build());
+	}
+
 }

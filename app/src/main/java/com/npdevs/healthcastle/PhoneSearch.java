@@ -58,7 +58,9 @@ public class PhoneSearch extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot postSnapshot:dataSnapshot.getChildren()){
-                    msampleItem.add(new SampleItem1(postSnapshot.getKey()));
+                    if(!postSnapshot.getKey().equalsIgnoreCase(MOB_NUMBER)) {
+                        msampleItem.add(new SampleItem1(postSnapshot.getKey()));
+                    }
                 }
                 recyclerView.setHasFixedSize(true);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PhoneSearch.this);

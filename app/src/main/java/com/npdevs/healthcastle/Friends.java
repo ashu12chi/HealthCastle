@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ public class Friends extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends);
         MOB = getIntent().getStringExtra("MOB");
+        Log.e("NSP","Number recieved: "+MOB);
         name = findViewById(R.id.name);
         doctors = findViewById(R.id.button9);
         chat = findViewById(R.id.button11);
@@ -38,18 +40,20 @@ public class Friends extends AppCompatActivity {
         calorieStats = findViewById(R.id.textView16);
         sugarStats=findViewById(R.id.textView17);
         bloodPressureDisplay=findViewById(R.id.textView19);
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference = FirebaseDatabase.getInstance().getReference("users/"+MOB);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Users users = dataSnapshot.child(MOB).getValue(Users.class);
-                String nameMob = users.getName();
-                name.setText(nameMob);
-                ArrayList<String> bp=users.getBloodpressure();
-                if(bp.size()>1) {
-                    bloodPressureDisplay.setText(bp.get(bp.size() - 1) + " (latest)");
-                } else {
-                    bloodPressureDisplay.setText("No data");
+                Users users = dataSnapshot.getValue(Users.class);
+                if(users!=null) {
+                    String nameMob = users.getName();
+                    name.setText(nameMob);
+                    ArrayList<String> bp = users.getBloodpressure();
+                    if (bp.size() > 1) {
+                        bloodPressureDisplay.setText(bp.get(bp.size() - 1) + " (latest)");
+                    } else {
+                        bloodPressureDisplay.setText("No data");
+                    }
                 }
             }
 

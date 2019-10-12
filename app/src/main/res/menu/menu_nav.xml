@@ -27,7 +27,7 @@
 		<item
 			android:id="@+id/doctors"
 			android:icon="@drawable/ic_person_black_24dp"
-			android:title="Contact doctors"/>
+			android:title="View data/ Contact doctors"/>
 		<item
 			android:id="@+id/sugar"
 			android:title="Add sugar level" />
