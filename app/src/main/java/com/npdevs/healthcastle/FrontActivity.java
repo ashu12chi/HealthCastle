@@ -1,10 +1,13 @@
 package com.npdevs.healthcastle;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +32,9 @@ public class FrontActivity extends AppCompatActivity {
 	private DrawerLayout dl;
 	private ActionBarDrawerToggle t;
 	private NavigationView nv;
+	private String MOB_NUMBER;
+	String[] activites=new String[]{"Weight Lifting: general","Weight Lifting: vigorous","Bicycling, Stationary: moderate","Rowing, Stationary: moderate","Bicycling, Stationary: vigorous","Dancing: slow, waltz, foxtrot","Volleyball: non-competitive, general play","Walking: 3.5 mph","Dancing: disco, ballroom, square","Soccer: general","Tennis: general","Swimming: backstroke","Running: 5.2 mph","Bicycling: 14-15.9 mph","Digging","Chopping & splitting wood","Sleeping","Cooking","Auto Repair","Paint house: outside","Computer Work","Welding","Coaching Sports","Sitting in Class"};
+	int[] calories1=new int[]{112,223,260,260,391,112,112,149,205,260,260,298,335,372,186,223,23,93,112,186,51,112,149,65};
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -43,6 +49,12 @@ public class FrontActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_front);
+		MOB_NUMBER=getIntent().getStringExtra("MOB_NUMBER");
+
+//		schedulealarm();
+
+		TextView heart=findViewById(R.id.textView12);
+		heart.setText(readHeartbeat());
 
 		dl = findViewById(R.id.activity_front);
 		t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
@@ -71,8 +83,9 @@ public class FrontActivity extends AppCompatActivity {
 					case R.id.addexercise:
 						Toast.makeText(FrontActivity.this, "I won't give help!",Toast.LENGTH_SHORT).show();
 						return true;
-					case R.id.viewstats:
-						Toast.makeText(FrontActivity.this,"Oh ho,stats!",Toast.LENGTH_SHORT).show();
+					case R.id.heartbeatstats:
+						intent = new Intent(FrontActivity.this,HeartGraph.class);
+						intent.putExtra("MOB_NUMBER",MOB_NUMBER);
 						return true;
 					case R.id.logout:
 						Toast.makeText(FrontActivity.this,"Logged out",Toast.LENGTH_SHORT).show();
@@ -83,7 +96,8 @@ public class FrontActivity extends AppCompatActivity {
 						finish();
 						return true;
 					case R.id.contact:
-						Toast.makeText(FrontActivity.this,"You can't contact me!",Toast.LENGTH_LONG).show();
+						intent = new Intent(FrontActivity.this,About.class);
+						startActivity(intent);
 						return true;
 					case R.id.feedback:
 						Toast.makeText(FrontActivity.this,"I don't need feedback!",Toast.LENGTH_LONG).show();
@@ -105,6 +119,8 @@ public class FrontActivity extends AppCompatActivity {
 		addExercise = findViewById(R.id.button4);
 		databaseHelper = new DatabaseHelper(this);
 		Cursor res = databaseHelper.getAllData();
+		consumedCalorie.setText(loadPreferences("consumed"));
+		burntCalorie.setText(loadPreferences("burnt"));
 		if(res.getCount()==0)
 		{
 			//databaseHelper.insertData("Ashu","20","10");
@@ -126,20 +142,48 @@ public class FrontActivity extends AppCompatActivity {
 				openCheckSafeActivity();
 			}
 		});
+		databaseHelper2 = new DatabaseHelper2(this);
+		Cursor res2 = databaseHelper2.getAllData();
+		//Log.e("ch",res2.getCount()+"");
+		if(res2.getCount()==0){
+			int size = activites.length;
+			for(int i=0;i<size;i++){
+				databaseHelper2.insertData(activites[i],30,calories1[i]);
+			}
+			Cursor ashu = databaseHelper2.getAllData();
+			/*while (ashu.moveToNext()){
+				Log.e("ashu",ashu.getString(0)+" "+ashu.getString(1)+" "+ashu.getString(3));
+			}*/
+		}
+		checkSafe.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				openCheckSafeActivity();
+			}
+		});
 		addFood.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-
+				openAddFoodActivity();
 			}
 		});
 		addExercise.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-
+				openAddExerciseActivity();
 			}
 		});
 	}
 
+	private void openAddExerciseActivity() {
+		Intent intent = new Intent(FrontActivity.this,AddExerciseSearch.class);
+		startActivity(intent);
+	}
+
+	private void openAddFoodActivity() {
+		Intent intent = new Intent(this,AddFoodSearch.class);
+		startActivity(intent);
+	}
 
 	private void clearTable()
 	{
@@ -156,9 +200,39 @@ public class FrontActivity extends AppCompatActivity {
 		editor.putString("User","no");
 		editor.apply();
 	}
-	
+
+	private void schedulealarm() {
+
+		// Construct an intent that will execute the AlarmReceiver
+		Intent intent = new Intent(this, AlarmReciever.class);
+		// Create a PendingIntent to be triggered when the alarm goes off
+		final PendingIntent pIntent = PendingIntent.getBroadcast(this, AlarmReciever.REQUEST_CODE,
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		// Setup periodic alarm every every half hour from this point onwards
+		AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+		// First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
+		// Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
+		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime(),
+				1000*40, pIntent);
+	}
+
+	private String readHeartbeat()
+	{
+		SharedPreferences sharedPreferences=getSharedPreferences("heartbeats",MODE_PRIVATE);
+		String beats=sharedPreferences.getString("beats","no");
+		if(beats.equals("") || beats.isEmpty() || beats.equals("no"))
+			beats="NaN";
+		return beats;
+	}
+
 	private void openCheckSafeActivity() {
-		Intent intent = new Intent(this,CheckSafe.class);
+		Intent intent = new Intent(this,CheckSafeSearch.class);
 		startActivity(intent);
+	}
+
+	private String loadPreferences(String whom)
+	{
+		SharedPreferences sharedPreferences=getSharedPreferences("food",MODE_PRIVATE);
+		return sharedPreferences.getString(whom,"0");
 	}
 }

@@ -15,7 +15,14 @@
 		android:roundIcon="@mipmap/ic_launcher_round"
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme">
-		<activity android:name=".CheckSafe"></activity>
+		<activity android:name=".CheckSafeSearch"></activity>
+		<activity android:name=".AddFoodSearch" />
+		<activity android:name=".AddFood" />
+		<activity android:name=".AddExerciseSearch" />
+		<activity android:name=".AddExercise" />
+		<activity android:name=".HeartGraph" />
+		<activity android:name=".About" />
+		<activity android:name=".CheckSafe" />
 		<activity android:name=".HeartMeter" />
 		<activity android:name=".FrontActivity" />
 		<activity android:name=".SignUp" />
@@ -26,6 +33,19 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+
+		<service
+			android:name=".push_notification"
+			android:exported="false" />
+
+		<receiver
+			android:name=".AlarmReciever"
+			android:process=":remote" />
+		<receiver android:name=".BootWakeUp">
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+			</intent-filter>
+		</receiver>
 	</application>
 
 </manifest>

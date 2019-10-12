@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,12 +77,16 @@ public class HeartMeter extends AppCompatActivity {
 		findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(HeartMeter.this,"Heartrate: "+text.getText().toString(),Toast.LENGTH_LONG).show();
+				String beats=text.getText().toString();
+				Toast.makeText(HeartMeter.this,"Heartrate: "+beats,Toast.LENGTH_LONG).show();
+				clearTable();
+				saveTable(beats);
 				Intent intent=new Intent(HeartMeter.this,FrontActivity.class);
 				startActivity(intent);
 				finish();
 			}
 		});
+
 	}
 
 	/**
@@ -267,5 +273,20 @@ public class HeartMeter extends AppCompatActivity {
 		}
 
 		return result;
+	}
+	private void clearTable()
+	{
+		SharedPreferences preferences = getSharedPreferences("heartbeats", Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.clear();
+		editor.commit();
+	}
+
+	private void saveTable(String beats)
+	{
+		SharedPreferences sharedPreferences=getSharedPreferences("heartbeats",MODE_PRIVATE);
+		SharedPreferences.Editor editor=sharedPreferences.edit();
+		editor.putString("beats",beats);
+		editor.apply();
 	}
 }

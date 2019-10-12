@@ -1,10 +1,15 @@
 package com.npdevs.healthcastle;
 
+import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -14,6 +19,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseApp;
@@ -45,9 +52,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CAMERA},
+                        100);
+        }
 
         loadPreferences();
-        if(!loggedIn.equals("no")) {
+
+        if(!loggedIn.equals("no") && ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
 //            Toast.makeText(getApplicationContext(),"Login Success!",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(MainActivity.this,FrontActivity.class);
             intent.putExtra("MOB_NUMBER",loggedIn);
@@ -128,6 +146,12 @@ public class MainActivity extends AppCompatActivity {
                 login();
             }
         });
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAboutActivity();
+            }
+        });
     }
 
     private void login() {
@@ -137,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
         {
             textInputLayout2.setError("Enter valid Password!");
             password.requestFocus();
-            return;
         } else {
             progressDialog.setMessage("Logging In...");
             progressDialog.setCancelable(false);
@@ -209,10 +232,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-//    private void openAboutActivity() {
-//        Intent intent = new Intent(this,About.class);
-//        startActivity(intent);
-//    }
+    private void openAboutActivity() {
+        Intent intent = new Intent(this,About.class);
+        startActivity(intent);
+    }
 
     private void loadPreferences()
     {
@@ -236,6 +259,34 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.putString("User",mobNo);
         editor.apply();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 100: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay!
+                    if(!loggedIn.equals("no")) {
+//            Toast.makeText(getApplicationContext(),"Login Success!",Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(MainActivity.this,FrontActivity.class);
+                        intent.putExtra("MOB_NUMBER",loggedIn);
+                        startActivity(intent);
+                        finish();
+                    }
+                } else {
+                    Toast.makeText(this,"Please grant camera permission then run the app",Toast.LENGTH_LONG).show();
+                    System.exit(0);
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
     }
 
 }

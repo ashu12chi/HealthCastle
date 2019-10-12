@@ -27,7 +27,7 @@ public class DatabaseHelper2 extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertData(String name,String duration,String calorie) {
+    public boolean insertData(String name,int duration,int calorie) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_21,name);

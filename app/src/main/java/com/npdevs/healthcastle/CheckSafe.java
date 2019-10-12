@@ -3,16 +3,19 @@ package com.npdevs.healthcastle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class CheckSafe extends AppCompatActivity {
-	private EditText food,amount;
+	private EditText amount;
+	private TextView food;
 	private Button check;
 	DatabaseHelper databaseHelper;
 	@Override
@@ -22,6 +25,8 @@ public class CheckSafe extends AppCompatActivity {
 		food = findViewById(R.id.editText9);
 		amount = findViewById(R.id.editText10);
 		check = findViewById(R.id.button6);
+		String foodName = getIntent().getStringExtra("Food");
+		food.setText(foodName);
 		databaseHelper = new DatabaseHelper(this);
 		check.setOnClickListener(new View.OnClickListener() {
 			@Override
