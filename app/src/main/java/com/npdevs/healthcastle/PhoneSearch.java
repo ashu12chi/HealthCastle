@@ -182,16 +182,16 @@ public class PhoneSearch extends AppCompatActivity {
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, " YES ", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                final DatabaseReference myRef=FirebaseDatabase.getInstance().getReference("users/"+MOB_NUMBER);
+                final DatabaseReference myRef=FirebaseDatabase.getInstance().getReference("users/"+mob);
                 myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Users user=dataSnapshot.getValue(Users.class);
                         ArrayList<String> family=user.getFamily();
-                        if(family.contains(mob)) {
+                        if(family.contains(MOB_NUMBER)) {
                             Toast.makeText(PhoneSearch.this,"Person already in Family",Toast.LENGTH_LONG).show();
                         } else {
-                            family.add(mob);
+                            family.add(MOB_NUMBER);
                             user.setFamily(family);
                             myRef.setValue(user);
                             Toast.makeText(PhoneSearch.this,"Person added to Family",Toast.LENGTH_LONG).show();
