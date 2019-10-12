@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -54,7 +55,14 @@ public class CheckSafe extends AppCompatActivity {
 								AlertDialog.Builder builder = new AlertDialog.Builder(CheckSafe.this);
 								builder.setCancelable(true);
 								builder.setTitle("Calorie Calculated");
-								builder.setMessage(ans+"");
+								String ans1 = ans+"";
+								if(ans<=Integer.parseInt(loadPreferences("allowed"))){
+									ans1 = ans+"\n"+"Safe!!!";
+								}
+								else{
+									ans1 = ans +"\n" + "Unsafe!!!";
+								}
+								builder.setMessage(ans1);
 								builder.show();
 								break;
 							}
@@ -66,5 +74,10 @@ public class CheckSafe extends AppCompatActivity {
 				}
 			}
 		});
+	}
+	private String loadPreferences(String whom)
+	{
+		SharedPreferences sharedPreferences=getSharedPreferences("food",MODE_PRIVATE);
+		return sharedPreferences.getString(whom,"0");
 	}
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<group android:checkableBehavior="single">
+	<group android:checkableBehavior="none">
 
 		<item
 			android:id="@+id/heartbeat"
@@ -11,11 +11,11 @@
 		<item
 			android:id="@+id/addfood"
 			android:icon="@drawable/ic_restaurant_black_24dp"
-			android:title="Add food eaten"/>
+			android:title="Extend food database"/>
 		<item
 			android:id="@+id/addexercise"
 			android:icon="@drawable/ic_transfer_within_a_station_black_24dp"
-			android:title="Add exercise done"/>
+			android:title="Extend exercise database"/>
 		<item
 			android:id="@+id/logout"
 			android:icon="@drawable/ic_person_black_24dp"

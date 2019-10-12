@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -22,12 +23,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 public class push_notification extends IntentService {
-	String saved;
+	String saved,loggedIn;
+	int calcon,steps,beats;
+
 	public push_notification() {
 		super("push_notification");
 	}
@@ -36,24 +41,50 @@ public class push_notification extends IntentService {
 	protected void onHandleIntent(Intent intent) {
         Log.e("NSP","Reached Here by NSP");
 		WakefulBroadcastReceiver.completeWakefulIntent(intent);
-		final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
-//		ref.addListenerForSingleValueEvent(new ValueEventListener() {
-//			@Override
-//			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//				loadPreferences();
-//				String no=dataSnapshot.child("no").getValue(String.class);
-//				if(!saved.equals(no)) {
-//					createNotificationChannel();
-//					savePreferences(no);
-//					notification();
-//				}
-//			}
-//			@Override
-//			public void onCancelled(@NonNull DatabaseError databaseError) {
-//			}
-//		});
-		createNotificationChannel();
-		notification(); // remove this
+		loadPreferencesMob();
+		loadPreferences();
+		if(!loggedIn.equals("no")) {
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			Date date1 = new Date();
+			final String date=dateFormat.format(date1);
+			Log.e("NSP","Today's date is: "+date);
+			String timeStamp = new SimpleDateFormat("HH").format(new Date());
+			final int ty = Integer.parseInt(timeStamp);
+			final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users/" + loggedIn);
+
+			ref.addListenerForSingleValueEvent(new ValueEventListener() {
+				@Override
+				public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+					if(!date.equals(saved)) {
+
+						Users user=dataSnapshot.getValue(Users.class);
+						loadData();
+						assert user != null;
+
+						ArrayList<Integer> temp=user.getCalorie();
+						temp.add(calcon);
+						user.setCalorie(temp);
+
+						temp=user.getSteps();
+						temp.add(steps);
+						user.setSteps(temp);
+
+						temp=user.getHeartbeat();
+						temp.add(beats);
+						user.setHeartbeat(temp);
+
+					} else if(ty>=21) {
+						createNotificationChannel();
+						notification();
+					}
+				}
+
+				@Override
+				public void onCancelled(@NonNull DatabaseError databaseError) {
+
+				}
+			});
+		}
 	}
 	private void createNotificationChannel() {
 		// Create the NotificationChannel, but only on API 26+ because
@@ -93,14 +124,58 @@ public class push_notification extends IntentService {
 	}
 	private void loadPreferences()
 	{
-		SharedPreferences sharedPreferences=getSharedPreferences("CheckNPAlarm",MODE_PRIVATE);
-		saved=sharedPreferences.getString("No","");
+		SharedPreferences sharedPreferences=getSharedPreferences("SaveDate",MODE_PRIVATE);
+		saved=sharedPreferences.getString("Date","");
 	}
 	private void savePreferences(String value)
 	{
-		SharedPreferences sharedPreferences=getSharedPreferences("CheckNPAlarm",MODE_PRIVATE);
+		SharedPreferences sharedPreferences=getSharedPreferences("SaveDate",MODE_PRIVATE);
 		SharedPreferences.Editor editor=sharedPreferences.edit();
-		editor.putString("No", value);
+		editor.putString("Date", value);
 		editor.apply();
+	}
+
+	private void loadPreferencesMob()
+	{
+		SharedPreferences sharedPreferences=getSharedPreferences("usersave",MODE_PRIVATE);
+		loggedIn=sharedPreferences.getString("User","no");
+		if(loggedIn.equals("") || loggedIn.isEmpty() || loggedIn.equals("no"))
+			loggedIn="no";
+	}
+
+	private void clearTableMob()
+	{
+		SharedPreferences preferences = getSharedPreferences("usersave", Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.clear();
+		editor.commit();
+	}
+
+	private void saveTableMob(String mobNo)
+	{
+		SharedPreferences sharedPreferences=getSharedPreferences("usersave",MODE_PRIVATE);
+		SharedPreferences.Editor editor=sharedPreferences.edit();
+		editor.putString("User",mobNo);
+		editor.apply();
+	}
+
+	private void loadData() {
+		SharedPreferences sharedPreferences=getSharedPreferences("food",MODE_PRIVATE);
+		String temp=sharedPreferences.getString("Consumed","0");
+		if(temp.equals("") || temp.isEmpty() || temp.equals("0"))
+			temp="0";
+		calcon=Integer.parseInt(temp);
+
+		sharedPreferences=getSharedPreferences("food",MODE_PRIVATE);
+		temp=sharedPreferences.getString("steps","0");
+		if(temp.equals("") || temp.isEmpty() || temp.equals("0"))
+			temp="0";
+		steps=(int)Double.parseDouble(temp);
+
+		sharedPreferences=getSharedPreferences("heartbeats",MODE_PRIVATE);
+		temp=sharedPreferences.getString("beats","0");
+		if(temp.equals("") || temp.isEmpty() || temp.equals("0"))
+			temp="0";
+		beats=Integer.parseInt(temp);
 	}
 }

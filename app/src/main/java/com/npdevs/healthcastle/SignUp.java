@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -140,7 +141,6 @@ public class SignUp extends AppCompatActivity {
 				if(m.isEmpty()) {
 					mobLay.setError("Enter valid Mobile Number");
 					mobNumber.requestFocus();
-					return;
 				} else {
 					progressDialog.setMessage("Sending OTP...");
 					progressDialog.show();
@@ -184,6 +184,7 @@ public class SignUp extends AppCompatActivity {
 								Toast.makeText(getApplicationContext(), "User already exists!!!", Toast.LENGTH_SHORT)
 										.show();
 								progressDialog.cancel();
+								mAuth.signOut();    // added this
 								finish();
 							}
 							else
@@ -191,6 +192,7 @@ public class SignUp extends AppCompatActivity {
 								databaseReference.child(users.getMob()).setValue(users);
 								Toast.makeText(getApplicationContext(),"SignUp successful!!!",Toast.LENGTH_SHORT).show();
 								progressDialog.cancel();
+								mAuth.signOut();    // added this
 								finish();
 							}
 
@@ -225,6 +227,7 @@ public class SignUp extends AppCompatActivity {
 		@Override
 		public void onVerificationFailed(FirebaseException e) {
 			Toast.makeText(SignUp.this,"Something fishy happened!",Toast.LENGTH_SHORT).show();
+			Log.e("NSP","Something fishy happened");
 			progressDialog.cancel();
 		}
 
@@ -232,7 +235,8 @@ public class SignUp extends AppCompatActivity {
 		public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
 			super.onCodeSent(s, forceResendingToken);
 			codeSent=s;
-			System.out.println("Reached Here Code "+codeSent);
+			Log.e("NSP","Reached Here, Code Found");
+			mAuth.signOut();
 			progressDialog.cancel();
 		}
 	};
@@ -241,7 +245,7 @@ public class SignUp extends AppCompatActivity {
 		String mobNumber1 = mobNumber.getText().toString();
 		PhoneAuthProvider.getInstance()
 				.verifyPhoneNumber("+91"+mobNumber1,60, TimeUnit.SECONDS,this, mCallbacks);
-		System.out.println("Reached Here");
+		Log.e("NSP","Reached Here");
 		progressDialog.cancel();
 	}
 }

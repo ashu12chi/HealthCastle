@@ -44,6 +44,7 @@ public class AddExercise extends AppCompatActivity {
 						//clearTable();
 						saveTable(ans+"");
 						Toast.makeText(getApplicationContext(),ans+"",Toast.LENGTH_SHORT).show();
+						finish();
 					}
 				}
 			}

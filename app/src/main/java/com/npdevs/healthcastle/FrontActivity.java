@@ -6,6 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.MenuItem;
@@ -21,7 +25,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class FrontActivity extends AppCompatActivity {
+public class FrontActivity extends AppCompatActivity implements SensorEventListener {
 	private TextView maxCalorie,consumedCalorie,burntCalorie,allowedCalorie,steps;
 	private Button checkSafe,addFood,addExercise;
 	private DatabaseHelper databaseHelper;
@@ -33,6 +37,10 @@ public class FrontActivity extends AppCompatActivity {
 	private ActionBarDrawerToggle t;
 	private NavigationView nv;
 	private String MOB_NUMBER;
+	private int age,weight,height,sex;
+	private SensorManager sensorManager;
+	private Sensor sensor;
+	boolean running = false;
 	String[] activites=new String[]{"Weight Lifting: general","Weight Lifting: vigorous","Bicycling, Stationary: moderate","Rowing, Stationary: moderate","Bicycling, Stationary: vigorous","Dancing: slow, waltz, foxtrot","Volleyball: non-competitive, general play","Walking: 3.5 mph","Dancing: disco, ballroom, square","Soccer: general","Tennis: general","Swimming: backstroke","Running: 5.2 mph","Bicycling: 14-15.9 mph","Digging","Chopping & splitting wood","Sleeping","Cooking","Auto Repair","Paint house: outside","Computer Work","Welding","Coaching Sports","Sitting in Class"};
 	int[] calories1=new int[]{112,223,260,260,391,112,112,149,205,260,260,298,335,372,186,223,23,93,112,186,51,112,149,65};
 
@@ -51,7 +59,9 @@ public class FrontActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_front);
 		MOB_NUMBER=getIntent().getStringExtra("MOB_NUMBER");
 
-//		schedulealarm();
+		sensorManager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
+		loadUserData();
+		schedulealarm();
 
 		TextView heart=findViewById(R.id.textView12);
 		heart.setText(readHeartbeat());
@@ -115,7 +125,7 @@ public class FrontActivity extends AppCompatActivity {
 						startActivity(intent);
 						return true;
 					case R.id.feedback:
-						Toast.makeText(FrontActivity.this,"I don't need feedback!",Toast.LENGTH_LONG).show();
+						Toast.makeText(FrontActivity.this,"Sorry, currently not available",Toast.LENGTH_LONG).show();
 					default:
 						return true;
 				}
@@ -136,6 +146,26 @@ public class FrontActivity extends AppCompatActivity {
 		Cursor res = databaseHelper.getAllData();
 		consumedCalorie.setText(loadPreferences("consumed"));
 		burntCalorie.setText(loadPreferences("burnt"));
+		if(sex==1){
+			double bmr = 88.362+(13.397*weight)+(4.799*height)-(5.677*age);
+			bmr = bmr*1.2;
+			int bmr1 = (int)bmr;
+			maxCalorie.setText(bmr1+"");
+			int x = Integer.parseInt(burntCalorie.getText().toString());
+			int y = Integer.parseInt(consumedCalorie.getText().toString());
+			allowedCalorie.setText(bmr1+x-y+"");
+			saveTable2(bmr1+x-y+"");
+		}
+		else{
+			double bmr = 447.593+(9.247*weight)+(3.098*height)-(4.330*age);
+			bmr = bmr*1.2;
+			int bmr1 = (int)bmr;
+			maxCalorie.setText(bmr1+"");
+			int x = Integer.parseInt(burntCalorie.getText().toString());
+			int y = Integer.parseInt(consumedCalorie.getText().toString());
+			allowedCalorie.setText(bmr1+x-y+"");
+			saveTable2(bmr1+x-y+"");
+		}
 		if(res.getCount()==0)
 		{
 			//databaseHelper.insertData("Ashu","20","10");
@@ -249,5 +279,84 @@ public class FrontActivity extends AppCompatActivity {
 	{
 		SharedPreferences sharedPreferences=getSharedPreferences("food",MODE_PRIVATE);
 		return sharedPreferences.getString(whom,"0");
+	}
+
+	private void loadUserData() {
+		SharedPreferences sharedPreferences=getSharedPreferences("usersave",MODE_PRIVATE);
+		String temp=sharedPreferences.getString("Age","0");
+		if(temp.equals("") || temp.isEmpty() || temp.equals("0"))
+			temp="0";
+		age=Integer.parseInt(temp);
+		temp=sharedPreferences.getString("Height","0");
+		if(temp.equals("") || temp.isEmpty() || temp.equals("0"))
+			temp="0";
+		height=Integer.parseInt(temp);
+		temp=sharedPreferences.getString("Weight","0");
+		if(temp.equals("") || temp.isEmpty() || temp.equals("0"))
+			temp="0";
+		weight=Integer.parseInt(temp);
+		temp=sharedPreferences.getString("Sex","0");
+		if(temp.equals("") || temp.isEmpty() || temp.equals("0"))
+			temp="0";
+		sex=Integer.parseInt(temp);
+	}
+
+	@Override
+	public void onResume(){
+		super.onResume();
+		running = true;
+		sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+		//   if(sensorManager!=null)
+		//      Log.e("ashu","ashu");
+		if(sensor!=null){
+			sensorManager.registerListener(this,sensor,sensorManager.SENSOR_DELAY_FASTEST);
+		}
+		else{
+			Toast.makeText(this,"Sensor not found!!!",Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	@Override
+	public void onPause(){
+		super.onPause();
+		running = false;
+	}
+
+	@Override
+	public void onSensorChanged(SensorEvent sensorEvent) {
+		if(running){
+			steps.setText(String.valueOf(sensorEvent.values[0]));
+			saveTable1(String.valueOf(sensorEvent.values[0]));
+			String burnt1 = loadPreferences("burnt");
+
+			int x = Integer.parseInt(burnt1);
+			int z = (int)(0.05*Double.parseDouble(steps.getText().toString()));
+			saveTable(x+z+"");
+		}
+	}
+	private void saveTable(String ans)
+	{
+		SharedPreferences sharedPreferences=getSharedPreferences("food",MODE_PRIVATE);
+		SharedPreferences.Editor editor=sharedPreferences.edit();
+		editor.putString("burnt",ans);
+		editor.apply();
+	}
+	private void saveTable1(String ans)
+	{
+		SharedPreferences sharedPreferences=getSharedPreferences("food",MODE_PRIVATE);
+		SharedPreferences.Editor editor=sharedPreferences.edit();
+		editor.putString("steps",ans);
+		editor.apply();
+	}
+	private void saveTable2(String ans)
+	{
+		SharedPreferences sharedPreferences=getSharedPreferences("food",MODE_PRIVATE);
+		SharedPreferences.Editor editor=sharedPreferences.edit();
+		editor.putString("allowed",ans);
+		editor.apply();
+	}
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int i) {
+
 	}
 }

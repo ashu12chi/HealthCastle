@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                         {
                             mobNo=mob;
                             clearTable();
-                            saveTable();
+                            saveTable(login.getAge(),login.getHeight(),login.getWeight(),login.getSex());
                             Toast.makeText(getApplicationContext(),"Login Success!",Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(MainActivity.this,FrontActivity.class);
                             intent.putExtra("MOB_NUMBER",mob);
@@ -253,11 +253,15 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
     }
 
-    private void saveTable()
+    private void saveTable(int age,int height,int weight,int sex)
     {
         SharedPreferences sharedPreferences=getSharedPreferences("usersave",MODE_PRIVATE);
         SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.putString("User",mobNo);
+        editor.putString("Age",""+age);
+        editor.putString("Height",""+height);
+        editor.putString("Weight",""+weight);
+        editor.putString("Gender",""+age);
         editor.apply();
     }
 
