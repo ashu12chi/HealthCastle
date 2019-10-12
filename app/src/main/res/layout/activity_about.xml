@@ -48,7 +48,7 @@
 		android:id="@+id/textView5"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Developers\nAshutosh Chitranshi\nNishchal Siddharth Pandey\nAnkit Raj"
+		android:text="Developers\n\nAshutosh Chitranshi\nNishchal Siddharth Pandey\nAnkit Raj"
 		android:textColor="#FFFFFF"
 		android:textSize="18sp"
 		app:layout_constraintBottom_toBottomOf="parent"

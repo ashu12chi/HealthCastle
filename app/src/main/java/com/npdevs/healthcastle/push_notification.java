@@ -55,25 +55,31 @@ public class push_notification extends IntentService {
 			ref.addListenerForSingleValueEvent(new ValueEventListener() {
 				@Override
 				public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-					if(!date.equals(saved)) {
+					if(ty<=1) {
+						resetData();
+					}
+					if(!date.equals(saved) && ty>=22) {
 
 						Users user=dataSnapshot.getValue(Users.class);
 						loadData();
 						assert user != null;
 
 						ArrayList<Integer> temp=user.getCalorie();
-						temp.add(calcon);
+						if(calcon!=0)
+							temp.add(calcon);
 						user.setCalorie(temp);
 
 						temp=user.getSteps();
-						temp.add(steps);
+						if(steps!=0)
+							temp.add(steps);
 						user.setSteps(temp);
 
 						temp=user.getHeartbeat();
-						temp.add(beats);
+						if(beats!=0)
+							temp.add(beats);
 						user.setHeartbeat(temp);
 
-					} else if(ty>=21) {
+					} else if(ty>=23) {
 						createNotificationChannel();
 						notification();
 					}
@@ -177,5 +183,15 @@ public class push_notification extends IntentService {
 		if(temp.equals("") || temp.isEmpty() || temp.equals("0"))
 			temp="0";
 		beats=Integer.parseInt(temp);
+	}
+	private void resetData() {
+		SharedPreferences preferences = getSharedPreferences("food", Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.clear();
+		editor.commit();
+		preferences = getSharedPreferences("heartbeats", Context.MODE_PRIVATE);
+		editor = preferences.edit();
+		editor.clear();
+		editor.commit();
 	}
 }

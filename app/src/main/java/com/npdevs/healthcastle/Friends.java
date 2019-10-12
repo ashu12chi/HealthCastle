@@ -16,9 +16,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class Friends extends AppCompatActivity {
     private String MOB;
-    private TextView name,heartStats,stepStats,calorieStats;
+    private TextView name,heartStats,stepStats,calorieStats,sugarStats,bloodPressureDisplay;
     private DatabaseReference databaseReference;
     private Button doctors,chat,pharmacy,diagnostics;
     @Override
@@ -34,6 +36,8 @@ public class Friends extends AppCompatActivity {
         heartStats = findViewById(R.id.textView14);
         stepStats = findViewById(R.id.textView15);
         calorieStats = findViewById(R.id.textView16);
+        sugarStats=findViewById(R.id.textView17);
+        bloodPressureDisplay=findViewById(R.id.textView19);
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -41,6 +45,12 @@ public class Friends extends AppCompatActivity {
                 Users users = dataSnapshot.child(MOB).getValue(Users.class);
                 String nameMob = users.getName();
                 name.setText(nameMob);
+                ArrayList<String> bp=users.getBloodpressure();
+                if(bp.size()>1) {
+                    bloodPressureDisplay.setText(bp.get(bp.size() - 1) + " (latest)");
+                } else {
+                    bloodPressureDisplay.setText("No data");
+                }
             }
 
             @Override
@@ -68,6 +78,14 @@ public class Friends extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Friends.this,CalorieGraph.class);
+                intent.putExtra("MOB_NUMBER",MOB);
+                startActivity(intent);
+            }
+        });
+        sugarStats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Friends.this,SugarLevelGraph.class);
                 intent.putExtra("MOB_NUMBER",MOB);
                 startActivity(intent);
             }
@@ -100,5 +118,6 @@ public class Friends extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 }

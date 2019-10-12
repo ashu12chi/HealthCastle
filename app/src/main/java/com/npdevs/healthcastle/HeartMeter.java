@@ -81,8 +81,6 @@ public class HeartMeter extends AppCompatActivity {
 				Toast.makeText(HeartMeter.this,"Heartrate: "+beats,Toast.LENGTH_LONG).show();
 				clearTable();
 				saveTable(beats);
-				Intent intent=new Intent(HeartMeter.this,FrontActivity.class);
-				startActivity(intent);
 				finish();
 			}
 		});

@@ -19,7 +19,7 @@
 		<item
 			android:id="@+id/mobSearch"
 			android:icon="@drawable/ic_person_black_24dp"
-			android:title="Add to family"/>
+			android:title="Add person to family"/>
 		<item
 			android:id="@+id/connection"
 			android:icon="@drawable/ic_person_black_24dp"
@@ -27,7 +27,13 @@
 		<item
 			android:id="@+id/doctors"
 			android:icon="@drawable/ic_person_black_24dp"
-			android:title="Contact"/>
+			android:title="Contact doctors"/>
+		<item
+			android:id="@+id/sugar"
+			android:title="Add sugar level" />
+		<item
+			android:id="@+id/bloodpressure"
+			android:title="Add blood pressure level" />
 		<item
 			android:id="@+id/logout"
 			android:icon="@drawable/ic_person_black_24dp"
@@ -47,6 +53,10 @@
 				android:id="@+id/caloriestats"
 				android:icon="@drawable/ic_restaurant_black_24dp"
 				android:title="Calories stats" />
+			<item
+				android:id="@+id/sugarstats"
+				android:icon="@drawable/ic_restaurant_black_24dp"
+				android:title="Sugar level stats" />
 		</menu>
 	</item>
 

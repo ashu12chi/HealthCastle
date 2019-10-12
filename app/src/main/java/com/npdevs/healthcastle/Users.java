@@ -5,13 +5,13 @@ import java.util.ArrayList;
 public class Users {
 	private String name,mob,password,city;
 	private int age,weight,height,sex;
-	private ArrayList<Integer> steps,calorie,heartbeat,sugar,bloodpressure;
-	private ArrayList<String> family;
+	private ArrayList<Integer> steps,calorie,heartbeat,sugar;
+	private ArrayList<String> family,bloodpressure;
 
 	public Users() {
 	}
 
-	public Users(String name, String mob, String password, int age, int weight, int height, int sex, String city, ArrayList<Integer> steps, ArrayList<Integer> calorie, ArrayList<Integer> heartbeat, ArrayList<Integer> sugar, ArrayList<Integer> bloodpressure, ArrayList<String> family) {
+	public Users(String name, String mob, String password, int age, int weight, int height, int sex, String city, ArrayList<Integer> steps, ArrayList<Integer> calorie, ArrayList<Integer> heartbeat, ArrayList<Integer> sugar, ArrayList<String> bloodpressure, ArrayList<String> family) {
 		this.name = name;
 		this.mob = mob;
 		this.password = password;
@@ -44,11 +44,11 @@ public class Users {
 		this.sugar = sugar;
 	}
 
-	public ArrayList<Integer> getBloodpressure() {
+	public ArrayList<String> getBloodpressure() {
 		return bloodpressure;
 	}
 
-	public void setBloodpressure(ArrayList<Integer> bloodpressure) {
+	public void setBloodpressure(ArrayList<String> bloodpressure) {
 		this.bloodpressure = bloodpressure;
 	}
 

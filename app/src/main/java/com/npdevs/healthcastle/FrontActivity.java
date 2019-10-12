@@ -90,7 +90,6 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 				Intent intent = new Intent(FrontActivity.this,EditProfile.class);
 				intent.putExtra("MOB_NUMBER",MOB_NUMBER);
 				startActivity(intent);
-				finish();
 			}
 		});
 		nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -103,7 +102,6 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 						//Toast.makeText(FrontActivity.this, "Click finish when satisfied!",Toast.LENGTH_SHORT).show();
 						Intent intent=new Intent(FrontActivity.this,HeartMeter.class);
 						startActivity(intent);
-						finish();
 						return true;
 					case R.id.addfood:
 						//Toast.makeText(FrontActivity.this, "Settings... who got time for that?",Toast.LENGTH_SHORT).show();
@@ -122,6 +120,11 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 						return true;
 					case R.id.caloriestats:
 						intent = new Intent(FrontActivity.this,CalorieGraph.class);
+						intent.putExtra("MOB_NUMBER",MOB_NUMBER);
+						startActivity(intent);
+						return true;
+					case R.id.sugarstats:
+						intent = new Intent(FrontActivity.this,SugarLevelGraph.class);
 						intent.putExtra("MOB_NUMBER",MOB_NUMBER);
 						startActivity(intent);
 						return true;
@@ -159,6 +162,16 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 						return true;
 					case R.id.feedback:
 						Toast.makeText(FrontActivity.this,"Sorry, currently not available",Toast.LENGTH_LONG).show();
+						return true;
+					case R.id.sugar:
+						intent=new Intent(FrontActivity.this,SugarMeasure.class);
+						intent.putExtra("MOB_NUMBER",MOB_NUMBER);
+						startActivity(intent);
+						return true;
+					case R.id.bloodpressure:
+						intent=new Intent(FrontActivity.this,BloodpressureMeasure.class);
+						intent.putExtra("MOB_NUMBER",MOB_NUMBER);
+						startActivity(intent);
 						return true;
 					default:
 						return true;
