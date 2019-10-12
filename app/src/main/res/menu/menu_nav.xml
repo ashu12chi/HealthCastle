@@ -19,7 +19,7 @@
 		<item
 			android:id="@+id/mobSearch"
 			android:icon="@drawable/ic_person_black_24dp"
-			android:title="Search Contact"/>
+			android:title="Add to family"/>
 		<item
 			android:id="@+id/logout"
 			android:icon="@drawable/ic_person_black_24dp"

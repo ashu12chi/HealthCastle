@@ -1,20 +1,31 @@
 package com.npdevs.healthcastle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,18 +33,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PhoneSearch extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private EditText mob;
     private RecyclerView recyclerView;
+    private String MOB_NUMBER;
     List<SampleItem1> msampleItem = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_search);
+        MOB_NUMBER=getIntent().getStringExtra("MOB_NUMBER");
         recyclerView = findViewById(R.id.recyclerview);
         mob = findViewById(R.id.editText15);
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
@@ -132,10 +148,7 @@ public class PhoneSearch extends AppCompatActivity {
             holder.textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(PhoneSearch.this, AddFood.class);
-                    intent.putExtra("Food", str);
-                    startActivity(intent);
-                    finish();
+                    openDialog(str);
                 }
             });
         }
@@ -144,5 +157,78 @@ public class PhoneSearch extends AppCompatActivity {
         public int getItemCount() {
             return samples.size();
         }
+    }
+
+    public void openDialog(final String mob) {
+
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+
+        TextView title = new TextView(this);
+
+        title.setText("");
+        title.setPadding(150, 10, 10, 10);   // Set Position
+        title.setGravity(Gravity.CENTER);
+        title.setTextColor(Color.BLACK);
+        title.setTextSize(20);
+        alertDialog.setCustomTitle(title);
+
+        TextView msg = new TextView(this);
+
+        msg.setText("    Add Person to family list?");
+        msg.setTextColor(Color.BLACK);
+        msg.setTextSize(20);
+        alertDialog.setView(msg);
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, " YES ", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                final DatabaseReference myRef=FirebaseDatabase.getInstance().getReference("users/"+MOB_NUMBER);
+                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Users user=dataSnapshot.getValue(Users.class);
+                        ArrayList<String> family=user.getFamily();
+                        if(family.contains(mob)) {
+                            Toast.makeText(PhoneSearch.this,"Person already in Family",Toast.LENGTH_LONG).show();
+                        } else {
+                            family.add(mob);
+                            user.setFamily(family);
+                            myRef.setValue(user);
+                            Toast.makeText(PhoneSearch.this,"Person added to Family",Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "NO   ", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // NO need to write
+            }
+        });
+
+        new Dialog(getApplicationContext());
+        alertDialog.show();
+
+        // Set Properties for OK Button
+        final Button okBT = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+        LinearLayout.LayoutParams neutralBtnLP = (LinearLayout.LayoutParams) okBT.getLayoutParams();
+        neutralBtnLP.gravity = Gravity.FILL_HORIZONTAL;
+        okBT.setPadding(50, 10, 10, 10);   // Set Position
+        okBT.setTextColor(Color.BLUE);
+        okBT.setLayoutParams(neutralBtnLP);
+
+        final Button cancelBT = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        LinearLayout.LayoutParams negBtnLP = (LinearLayout.LayoutParams) okBT.getLayoutParams();
+        negBtnLP.gravity = Gravity.FILL_HORIZONTAL;
+        cancelBT.setTextColor(Color.RED);
+        cancelBT.setLayoutParams(negBtnLP);
     }
 }

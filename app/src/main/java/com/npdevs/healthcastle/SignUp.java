@@ -176,7 +176,9 @@ public class SignUp extends AppCompatActivity {
 					password1= Arrays.toString(pp);
 					ArrayList<Integer> first=new ArrayList<>(1);
 					first.add(0);
-					final Users users = new Users(name1,mobNumber1,password1,age1,weight1,height1,sex2,first,first,first);
+					ArrayList<String> second=new ArrayList<>(1);
+					second.add("no");
+					final Users users = new Users(name1,mobNumber1,password1,age1,weight1,height1,sex2,first,first,first,second);
 					databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
 						@Override
 						public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

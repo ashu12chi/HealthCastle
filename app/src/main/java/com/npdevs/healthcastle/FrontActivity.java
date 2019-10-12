@@ -75,6 +75,17 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		nv = findViewById(R.id.nv);
+		View headerView = nv.getHeaderView(0);
+		Button editProfile=headerView.findViewById(R.id.button8);
+		editProfile.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(FrontActivity.this,EditProfile.class);
+				intent.putExtra("MOB_NUMBER",MOB_NUMBER);
+				startActivity(intent);
+				finish();
+			}
+		});
 		nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 			@Override
 			public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -114,6 +125,7 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 						return true;
 					case R.id.mobSearch:
 						intent = new Intent(FrontActivity.this,PhoneSearch.class);
+						intent.putExtra("MOB_NUMBER",MOB_NUMBER);
 						startActivity(intent);
 						return true;
 					case R.id.logout:
@@ -130,6 +142,7 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 						return true;
 					case R.id.feedback:
 						Toast.makeText(FrontActivity.this,"Sorry, currently not available",Toast.LENGTH_LONG).show();
+						return true;
 					default:
 						return true;
 				}

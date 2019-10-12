@@ -6,11 +6,12 @@ public class Users {
 	private String name,mob,password;
 	private int age,weight,height,sex;
 	private ArrayList<Integer> steps,calorie,heartbeat;
+	private ArrayList<String> family;
 
 	public Users() {
 	}
 
-	public Users(String name, String mob, String password, int age, int weight, int height, int sex, ArrayList<Integer> steps, ArrayList<Integer> calorie, ArrayList<Integer> heartbeat) {
+	public Users(String name, String mob, String password, int age, int weight, int height, int sex, ArrayList<Integer> steps, ArrayList<Integer> calorie, ArrayList<Integer> heartbeat, ArrayList<String> family) {
 		this.name = name;
 		this.mob = mob;
 		this.password = password;
@@ -21,6 +22,15 @@ public class Users {
 		this.steps = steps;
 		this.calorie = calorie;
 		this.heartbeat = heartbeat;
+		this.family=family;
+	}
+
+	public ArrayList<String> getFamily() {
+		return family;
+	}
+
+	public void setFamily(ArrayList<String> family) {
+		this.family = family;
 	}
 
 	public String getName() {
