@@ -17,6 +17,10 @@
 			android:icon="@drawable/ic_transfer_within_a_station_black_24dp"
 			android:title="Extend exercise database"/>
 		<item
+			android:id="@+id/mobSearch"
+			android:icon="@drawable/ic_person_black_24dp"
+			android:title="Search Contact"/>
+		<item
 			android:id="@+id/logout"
 			android:icon="@drawable/ic_person_black_24dp"
 			android:title="Logout"/>

@@ -112,6 +112,10 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 						intent.putExtra("MOB_NUMBER",MOB_NUMBER);
 						startActivity(intent);
 						return true;
+					case R.id.mobSearch:
+						intent = new Intent(FrontActivity.this,PhoneSearch.class);
+						startActivity(intent);
+						return true;
 					case R.id.logout:
 						Toast.makeText(FrontActivity.this,"Logged out",Toast.LENGTH_SHORT).show();
 						clearTable();
