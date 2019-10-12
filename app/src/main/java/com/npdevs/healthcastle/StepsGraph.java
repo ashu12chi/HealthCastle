@@ -2,6 +2,7 @@ package com.npdevs.healthcastle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
 import android.os.Bundle;
@@ -22,14 +23,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class HeartGraph extends AppCompatActivity {
+public class StepsGraph extends AppCompatActivity {
 
 	private String MOB_NUMBER;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_heart_graph);
+		setContentView(R.layout.activity_steps_graph);
 
 		MOB_NUMBER=getIntent().getStringExtra("MOB_NUMBER");
 
@@ -40,14 +41,14 @@ public class HeartGraph extends AppCompatActivity {
 				Users user=dataSnapshot.getValue(Users.class);
 				ArrayList<Entry> entries=new ArrayList<>();
 				assert user != null;
-				ArrayList<Integer> data=user.getHeartbeat();
+				ArrayList<Integer> data=user.getSteps();
 				for(int i=1;i<data.size();i++) {
 					entries.add(new Entry(i-1,data.get(i)));
 				}
 				if(entries.size()>=2) {
-					LineDataSet dataSet = new LineDataSet(entries, "Heartbeat values");
-					dataSet.setColor(ContextCompat.getColor(HeartGraph.this, R.color.colorPrimary));
-					dataSet.setValueTextColor(ContextCompat.getColor(HeartGraph.this, R.color.colorPrimaryDark));
+					LineDataSet dataSet = new LineDataSet(entries, "Steps taken values");
+					dataSet.setColor(ContextCompat.getColor(StepsGraph.this, R.color.colorPrimary));
+					dataSet.setValueTextColor(ContextCompat.getColor(StepsGraph.this, R.color.colorPrimaryDark));
 
 					com.github.mikephil.charting.charts.LineChart chart = findViewById(R.id.chart);
 
@@ -92,7 +93,7 @@ public class HeartGraph extends AppCompatActivity {
 
 			@Override
 			public void onCancelled(@NonNull DatabaseError databaseError) {
-				Toast.makeText(HeartGraph.this,"Sorry, attempt failed!", Toast.LENGTH_LONG).show();
+				Toast.makeText(StepsGraph.this,"Sorry, attempt failed!", Toast.LENGTH_LONG).show();
 			}
 		});
 	}

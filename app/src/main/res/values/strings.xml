@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Health Castle</string>
-    <string name="Open">Open</string>
-    <string name="Close">Close</string>
+	<string name="app_name">Health Castle</string>
+	<string name="Open">Open</string>
+	<string name="Close">Close</string>
 </resources>

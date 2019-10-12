@@ -90,6 +90,17 @@ public class FrontActivity extends AppCompatActivity {
 					case R.id.heartbeatstats:
 						intent = new Intent(FrontActivity.this,HeartGraph.class);
 						intent.putExtra("MOB_NUMBER",MOB_NUMBER);
+						startActivity(intent);
+						return true;
+					case R.id.caloriestats:
+						intent = new Intent(FrontActivity.this,CalorieGraph.class);
+						intent.putExtra("MOB_NUMBER",MOB_NUMBER);
+						startActivity(intent);
+						return true;
+					case R.id.stepsstats:
+						intent = new Intent(FrontActivity.this,StepsGraph.class);
+						intent.putExtra("MOB_NUMBER",MOB_NUMBER);
+						startActivity(intent);
 						return true;
 					case R.id.logout:
 						Toast.makeText(FrontActivity.this,"Logged out",Toast.LENGTH_SHORT).show();
