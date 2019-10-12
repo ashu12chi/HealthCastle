@@ -10,6 +10,51 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
+		<Button
+			android:id="@+id/button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Check Food under daily limits"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintHorizontal_bias="0.443"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/textView9"
+			app:layout_constraintVertical_bias="0.374" />
+
+		<Button
+			android:id="@+id/button2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Add Food eaten"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintHorizontal_bias="0.461"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/button"
+			app:layout_constraintVertical_bias="0.193" />
+
+		<Button
+			android:id="@+id/button4"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Add Exercises done"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintHorizontal_bias="0.452"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/button2"
+			app:layout_constraintVertical_bias="0.416" />
+
+		<Button
+			android:id="@+id/button10"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Click to make me listen to you"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+
 		<TextView
 			android:id="@+id/textView"
 			android:layout_width="wrap_content"
@@ -165,42 +210,6 @@
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toBottomOf="@+id/textView10"
 			app:layout_constraintVertical_bias="0.104" />
-
-		<Button
-			android:id="@+id/button"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Check Food under daily limits"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintHorizontal_bias="0.443"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/textView9"
-			app:layout_constraintVertical_bias="0.374" />
-
-		<Button
-			android:id="@+id/button2"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Add Food eaten"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintHorizontal_bias="0.461"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/button"
-			app:layout_constraintVertical_bias="0.193" />
-
-		<Button
-			android:id="@+id/button4"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Add Exercises done"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintHorizontal_bias="0.452"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/button2"
-			app:layout_constraintVertical_bias="0.416" />
 	</androidx.constraintlayout.widget.ConstraintLayout>
 
 	<com.google.android.material.navigation.NavigationView

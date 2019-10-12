@@ -35,6 +35,7 @@ import java.util.List;
 public class AddFoodSearch extends AppCompatActivity {
 	private EditText food;
 	private RecyclerView recyclerView;
+	private String SEARCH;
 	List<SampleItem> msampleItem = new ArrayList<>();
 	private DatabaseHelper databaseHelper;
 	@Override
@@ -82,6 +83,12 @@ public class AddFoodSearch extends AppCompatActivity {
 
 			}
 		});
+		try {
+			SEARCH = getIntent().getStringExtra("SEARCH");
+			food.setText(SEARCH);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	private class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 

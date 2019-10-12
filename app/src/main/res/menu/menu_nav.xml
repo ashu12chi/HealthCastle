@@ -21,6 +21,11 @@
 			android:icon="@drawable/ic_person_black_24dp"
 			android:title="Add to family"/>
 		<item
+			android:id="@+id/connection"
+			android:icon="@drawable/ic_person_black_24dp"
+			android:title="View Connection"/>
+
+		<item
 			android:id="@+id/logout"
 			android:icon="@drawable/ic_person_black_24dp"
 			android:title="Logout"/>

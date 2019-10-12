@@ -12,6 +12,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -19,24 +21,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class FrontActivity extends AppCompatActivity implements SensorEventListener {
+import java.util.ArrayList;
+import java.util.Locale;
+
+public class FrontActivity extends AppCompatActivity implements SensorEventListener, TextToSpeech.OnInitListener {
 	private TextView maxCalorie,consumedCalorie,burntCalorie,allowedCalorie,steps;
 	private Button checkSafe,addFood,addExercise;
 	private DatabaseHelper databaseHelper;
 	private DatabaseHelper2 databaseHelper2;
+	private TextToSpeech textToSpeech;
+	private String MOB_NUMBER;
 	private String[] categorties=new String[]{"Whole Milk","Paneer (Whole Milk)","Butter","Ghee","Apple","Banana","Grapes","Mango","Musambi","Orange","Cooked Cereal","Rice Cooked","Chapatti","Potato","Dal","Mixed Vegetables","Fish","Mutton","Egg","Biscuit (Sweet)","Cake (Plain)","Cake (Rich Chocolate)","Dosa (Plain)","Dosa (Masala)","Pakoras","Puri","Samosa","Vada (Medu)","Biryani (Mutton)","Biryani (Veg.)","Curry (Chicken)","Curry (Veg.)","Fried Fish","Pulav (Veg.)","Carrot Halwa","Jalebi","Kheer","Rasgulla"};
 	private int[] measure=new int[]{230,60,14,15,150,60,75,100,130,130,100,25,60,150,100,150,50,30,40,15,50,50,100,100,50,40,35,40,200,200,100,100,85,100,45,20,100,50};
 	private int[] calories=new int[]{150,150,45,45,55,55,55,55,55,55,80,80,80,80,80,80,55,75,75,70,135,225,135,250,175,85,140,70,225,200,225,130,140,130,165,100,180,140};
 	private DrawerLayout dl;
 	private ActionBarDrawerToggle t;
 	private NavigationView nv;
-	private String MOB_NUMBER;
 	private int age,weight,height,sex;
 	private SensorManager sensorManager;
 	private Sensor sensor;
@@ -128,6 +135,11 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 						intent.putExtra("MOB_NUMBER",MOB_NUMBER);
 						startActivity(intent);
 						return true;
+					case R.id.connection:
+						intent = new Intent(FrontActivity.this,Connections.class);
+						intent.putExtra("MOB_NUMBER",MOB_NUMBER);
+						startActivity(intent);
+						return true;
 					case R.id.logout:
 						Toast.makeText(FrontActivity.this,"Logged out",Toast.LENGTH_SHORT).show();
 						clearTable();
@@ -148,6 +160,20 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 				}
 			}
 
+		});
+
+		textToSpeech = new TextToSpeech(this, this);
+
+		Button button = findViewById(R.id.button10);
+
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+				intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+				intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.ENGLISH);
+				startActivityForResult(intent, 10);
+			}
 		});
 
 
@@ -375,5 +401,83 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int i) {
 
+	}
+
+	@Override
+	public void onInit(int i) {
+
+	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if(resultCode==RESULT_OK && data!=null) {
+			getWorkDoneFromResult(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS));
+		} else {
+			Toast.makeText(getApplicationContext(), "Failed to recognize speech!", Toast.LENGTH_LONG).show();
+		}
+	}
+
+	private void getWorkDoneFromResult(ArrayList<String> stringArrayListExtra) {
+		for (String str : stringArrayListExtra) {
+			if(str.toLowerCase().contains("add food")) {
+				Intent intent=new Intent(FrontActivity.this,AddFoodSearch.class);
+				try {
+					intent.putExtra("SEARCH", str.substring(str.lastIndexOf("add food") + 9).trim());
+				} catch (Exception e) {
+					intent.putExtra("SEARCH","");
+				}
+				startActivity(intent);
+				break;
+			}
+			if(str.toLowerCase().contains("add exercise")) {
+				Intent intent=new Intent(FrontActivity.this,AddExerciseSearch.class);
+				try {
+					intent.putExtra("SEARCH", str.substring(str.lastIndexOf("add exercise") + 13).trim());
+				} catch (Exception e) {
+					intent.putExtra("SEARCH","");
+				}
+				startActivity(intent);
+				break;
+			}
+			if(str.toLowerCase().contains("search person")) {
+				Intent intent=new Intent(FrontActivity.this,PhoneSearch.class);
+				try {
+					intent.putExtra("SEARCH", str.substring(str.lastIndexOf("search person") + 14).trim().replaceAll(" ",""));
+				} catch (Exception e) {
+					intent.putExtra("SEARCH","");
+				}
+				intent.putExtra("MOB_NUMBER",MOB_NUMBER);
+				startActivity(intent);
+				break;
+			}
+			if(str.toLowerCase().contains("steps graph")) {
+				Intent intent=new Intent(FrontActivity.this,StepsGraph.class);
+				intent.putExtra("MOB_NUMBER", MOB_NUMBER);
+				startActivity(intent);
+				break;
+			}
+			if(str.toLowerCase().contains("heart graph") || str.toLowerCase().contains("heartbeat graph") || str.toLowerCase().contains("heart rate graph")) {
+				Intent intent=new Intent(FrontActivity.this,HeartGraph.class);
+				intent.putExtra("MOB_NUMBER", MOB_NUMBER);
+				startActivity(intent);
+				break;
+			}
+			if(str.toLowerCase().contains("measure heart")) {
+				Intent intent=new Intent(FrontActivity.this,HeartMeter.class);
+				startActivity(intent);
+				break;
+			}
+			if(str.toLowerCase().contains("food graph") || str.toLowerCase().contains("calorie graph")) {
+				Intent intent=new Intent(FrontActivity.this,CalorieGraph.class);
+				intent.putExtra("MOB_NUMBER", MOB_NUMBER);
+				startActivity(intent);
+				break;
+			}
+		}
+	}
+
+	private void speak(String string) {
+		textToSpeech.speak(String.valueOf(string), TextToSpeech.QUEUE_ADD, null);
 	}
 }

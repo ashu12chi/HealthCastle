@@ -42,6 +42,7 @@ import java.util.List;
 public class PhoneSearch extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private EditText mob;
+    private String SEARCH;
     private RecyclerView recyclerView;
     private String MOB_NUMBER;
     List<SampleItem1> msampleItem = new ArrayList<>();
@@ -111,6 +112,12 @@ public class PhoneSearch extends AppCompatActivity {
 
             }
         });
+        try {
+            SEARCH = getIntent().getStringExtra("SEARCH");
+            mob.setText(SEARCH);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
     private class MainAdapter extends RecyclerView.Adapter<PhoneSearch.MainAdapter.ViewHolder> {
 
