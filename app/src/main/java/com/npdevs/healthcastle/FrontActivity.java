@@ -72,16 +72,20 @@ public class FrontActivity extends AppCompatActivity {
 				switch(id)
 				{
 					case R.id.heartbeat:
-						Toast.makeText(FrontActivity.this, "Click finish when satisfied!",Toast.LENGTH_SHORT).show();
+						//Toast.makeText(FrontActivity.this, "Click finish when satisfied!",Toast.LENGTH_SHORT).show();
 						Intent intent=new Intent(FrontActivity.this,HeartMeter.class);
 						startActivity(intent);
 						finish();
 						return true;
 					case R.id.addfood:
-						Toast.makeText(FrontActivity.this, "Settings... who got time for that?",Toast.LENGTH_SHORT).show();
+						//Toast.makeText(FrontActivity.this, "Settings... who got time for that?",Toast.LENGTH_SHORT).show();
+						Intent intent1 = new Intent(FrontActivity.this,AddNewFood.class);
+						startActivity(intent1);
 						return true;
 					case R.id.addexercise:
-						Toast.makeText(FrontActivity.this, "I won't give help!",Toast.LENGTH_SHORT).show();
+						//Toast.makeText(FrontActivity.this, "I won't give help!",Toast.LENGTH_SHORT).show();
+						Intent intent2 = new Intent(FrontActivity.this,AddNewExercise.class);
+						startActivity(intent2);
 						return true;
 					case R.id.heartbeatstats:
 						intent = new Intent(FrontActivity.this,HeartGraph.class);
