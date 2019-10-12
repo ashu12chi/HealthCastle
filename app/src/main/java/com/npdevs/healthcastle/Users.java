@@ -6,12 +6,12 @@ public class Users {
 	private String name,mob,password,city;
 	private int age,weight,height,sex;
 	private ArrayList<Integer> steps,calorie,heartbeat,sugar;
-	private ArrayList<String> family,bloodpressure;
+	private ArrayList<String> family,bloodpressure,emotions;
 
 	public Users() {
 	}
 
-	public Users(String name, String mob, String password, int age, int weight, int height, int sex, String city, ArrayList<Integer> steps, ArrayList<Integer> calorie, ArrayList<Integer> heartbeat, ArrayList<Integer> sugar, ArrayList<String> bloodpressure, ArrayList<String> family) {
+	public Users(String name, String mob, String password, int age, int weight, int height, int sex, String city, ArrayList<Integer> steps, ArrayList<Integer> calorie, ArrayList<Integer> heartbeat, ArrayList<Integer> sugar, ArrayList<String> bloodpressure, ArrayList<String> family, ArrayList<String> emotions) {
 		this.name = name;
 		this.mob = mob;
 		this.password = password;
@@ -26,6 +26,15 @@ public class Users {
 		this.bloodpressure=bloodpressure;
 		this.sugar=sugar;
 		this.city=city;
+		this.emotions=emotions;
+	}
+
+	public ArrayList<String> getEmotions() {
+		return emotions;
+	}
+
+	public void setEmotions(ArrayList<String> emotions) {
+		this.emotions = emotions;
 	}
 
 	public String getCity() {

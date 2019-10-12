@@ -4,23 +4,37 @@ import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,11 +53,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.npdevs.healthcastle.predictivemodels.Classification;
+import com.npdevs.healthcastle.predictivemodels.TensorFlowClassifier;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class FrontActivity extends AppCompatActivity implements SensorEventListener, TextToSpeech.OnInitListener {
+public class FrontActivity extends AppCompatActivity implements SensorEventListener, TextToSpeech.OnInitListener, SurfaceHolder.Callback {
 	private TextView maxCalorie,consumedCalorie,burntCalorie,allowedCalorie,steps;
 	private Button checkSafe,addFood,addExercise;
 	private DatabaseHelper databaseHelper;
@@ -62,6 +81,15 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 	boolean running = false;
 	String[] activites=new String[]{"Weight Lifting: general","Weight Lifting: vigorous","Bicycling, Stationary: moderate","Rowing, Stationary: moderate","Bicycling, Stationary: vigorous","Dancing: slow, waltz, foxtrot","Volleyball: non-competitive, general play","Walking: 3.5 mph","Dancing: disco, ballroom, square","Soccer: general","Tennis: general","Swimming: backstroke","Running: 5.2 mph","Bicycling: 14-15.9 mph","Digging","Chopping & splitting wood","Sleeping","Cooking","Auto Repair","Paint house: outside","Computer Work","Welding","Coaching Sports","Sitting in Class"};
 	int[] calories1=new int[]{112,223,260,260,391,112,112,149,205,260,260,298,335,372,186,223,23,93,112,186,51,112,149,65};
+
+	ImageView iv_image;
+	SurfaceView sv;
+	SurfaceHolder sHolder;
+	Camera mCamera;
+	Camera.Parameters parameters;
+	Bitmap bmp;
+	TensorFlowClassifier classifier;
+	static final int PIXEL_WIDTH = 48;
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -83,6 +111,20 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 		sensorManager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
 		loadUserData();
 		schedulealarm();
+		loadModel();
+
+		int index = getFrontCameraId();
+		if (index == -1){
+			Toast.makeText(getApplicationContext(), "No front camera", Toast.LENGTH_LONG).show();
+		}
+		else
+		{
+			iv_image = (ImageView) findViewById(R.id.imageView);
+			sv = (SurfaceView) findViewById(R.id.surfaceView);
+			sHolder = sv.getHolder();
+			sHolder.addCallback(this);
+			sHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+		}
 
 		TextView heart=findViewById(R.id.textView12);
 		heart.setText(readHeartbeat());
@@ -243,19 +285,11 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 		}
 		if(res.getCount()==0)
 		{
-			//databaseHelper.insertData("Ashu","20","10");
 			int size = categorties.length;
 			for(int i=0;i<size;i++){
 				databaseHelper.insertData(categorties[i],measure[i],calories[i]);
 			}
-			//Toast.makeText(this,"Hi",Toast.LENGTH_SHORT).show();
 		}
-       /* databaseHelper2 = new DatabaseHelper2(this);
-        Cursor res2 = databaseHelper2.getAllData();
-        if(res2.getCount()==0){
-            databaseHelper.insertData("Ashu","20","10");
-            Toast.makeText(this,"Hi",Toast.LENGTH_SHORT).show();
-        }*/
 		checkSafe.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -271,9 +305,6 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 				databaseHelper2.insertData(activites[i],30,calories1[i]);
 			}
 			Cursor ashu = databaseHelper2.getAllData();
-			/*while (ashu.moveToNext()){
-				Log.e("ashu",ashu.getString(0)+" "+ashu.getString(1)+" "+ashu.getString(3));
-			}*/
 		}
 		checkSafe.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -583,4 +614,172 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 		notificationManager.notify(12, builder.build());
 	}
 
+	private void loadModel() {
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					classifier= TensorFlowClassifier.create(getAssets(), "CNN",
+							"opt_em_convnet_5000.pb", "labels.txt", PIXEL_WIDTH,
+							"input", "output_50", true, 7);
+
+				} catch (final Exception e) {
+					//if they aren't found, throw an error!
+					throw new RuntimeException("Error initializing classifiers!", e);
+				}
+			}
+		}).start();
+	}
+	@Override
+	public void surfaceChanged(SurfaceHolder holder, int format, int w, int h)
+	{
+		parameters = mCamera.getParameters();
+		mCamera.setParameters(parameters);
+		mCamera.startPreview();
+
+		Camera.PictureCallback mCall = new Camera.PictureCallback()
+		{
+			@Override
+			public void onPictureTaken(byte[] data, Camera camera)
+			{
+
+				bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+				iv_image.setImageBitmap(bmp);
+				detectEmotion();
+			}
+		};
+
+		mCamera.takePicture(null, null, mCall);
+	}
+
+	int getFrontCameraId() {
+		Camera.CameraInfo ci = new Camera.CameraInfo();
+		for (int i = 0 ; i < Camera.getNumberOfCameras(); i++) {
+			Camera.getCameraInfo(i, ci);
+			if (ci.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) return i;
+		}
+		return -1; // No front-facing camera found
+	}
+
+	@Override
+	public void surfaceCreated(SurfaceHolder holder)
+	{
+		int index = getFrontCameraId();
+		if (index == -1){
+//			Toast.makeText(getApplicationContext(), "No front camera", Toast.LENGTH_LONG).show();
+		}
+		else
+		{
+			mCamera = Camera.open(index);
+//			Toast.makeText(getApplicationContext(), "With front camera", Toast.LENGTH_LONG).show();
+		}
+		mCamera = Camera.open(index);
+		try {
+			mCamera.setPreviewDisplay(holder);
+
+		} catch (IOException exception) {
+			mCamera.release();
+			mCamera = null;
+		}
+
+	}
+
+	@Override
+	public void surfaceDestroyed(SurfaceHolder holder)
+	{
+		mCamera.stopPreview();
+		mCamera.release();
+		mCamera = null;
+	}
+
+	@Override
+	public void onPointerCaptureChanged(boolean hasCapture) {
+
+	}
+
+	private void detectEmotion(){
+
+		Bitmap image=((BitmapDrawable)iv_image.getDrawable()).getBitmap();
+		Bitmap grayImage = toGrayscale(image);
+		Bitmap resizedImage=getResizedBitmap(grayImage,48,48);
+		int pixelarray[];
+
+		//Initialize the intArray with the same size as the number of pixels on the image
+		pixelarray = new int[resizedImage.getWidth()*resizedImage.getHeight()];
+
+		//copy pixel data from the Bitmap into the 'intArray' array
+		resizedImage.getPixels(pixelarray, 0, resizedImage.getWidth(), 0, 0, resizedImage.getWidth(), resizedImage.getHeight());
+
+
+		float normalized_pixels [] = new float[pixelarray.length];
+		for (int i=0; i < pixelarray.length; i++) {
+			// 0 for white and 255 for black
+			int pix = pixelarray[i];
+			int b = pix & 0xff;
+			//  normalized_pixels[i] = (float)((0xff - b)/255.0);
+			// normalized_pixels[i] = (float)(b/255.0);
+			normalized_pixels[i] = (float)(b);
+
+		}
+		System.out.println(normalized_pixels);
+		Log.d("pixel_values",String.valueOf(normalized_pixels));
+		String text=null;
+
+		try{
+			final Classification res = classifier.recognize(normalized_pixels);
+			//if it can't classify, output a question mark
+			if (res.getLabel() == null) {
+				text = "Status: "+ ": ?\n";
+			} else {
+				//else output its name
+				text = String.format("%s: %s, %f\n", "Status: ", res.getLabel(),
+						res.getConf());
+				final DatabaseReference myRef=FirebaseDatabase.getInstance().getReference("users/"+MOB_NUMBER);
+				myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+					@Override
+					public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+						Users user=dataSnapshot.getValue(Users.class);
+						assert user != null;
+						ArrayList<String> emo=user.getEmotions();
+						emo.add(res.getLabel());
+						user.setEmotions(emo);
+						myRef.setValue(user);
+					}
+
+					@Override
+					public void onCancelled(@NonNull DatabaseError databaseError) {
+
+					}
+				});
+			}
+		}
+		catch (Exception e){
+			System.out.print("Exception:"+e.toString());
+
+		}
+
+		Toast.makeText(FrontActivity.this,text,Toast.LENGTH_LONG).show();
+	}
+
+	public Bitmap toGrayscale(Bitmap bmpOriginal)
+	{
+		int width, height;
+		height = bmpOriginal.getHeight();
+		width = bmpOriginal.getWidth();
+
+		Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+		Canvas c = new Canvas(bmpGrayscale);
+		Paint paint = new Paint();
+		ColorMatrix cm = new ColorMatrix();
+		cm.setSaturation(0);
+		ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
+		paint.setColorFilter(f);
+		c.drawBitmap(bmpOriginal, 0, 0, paint);
+		return bmpGrayscale;
+	}
+
+	public Bitmap getResizedBitmap(Bitmap image, int bitmapWidth, int bitmapHeight) {
+		return Bitmap.createScaledBitmap(image, bitmapWidth, bitmapHeight, true);
+	}
 }
