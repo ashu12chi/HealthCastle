@@ -566,9 +566,11 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 					}
 					int depcount=0;
 					ArrayList<String> emo=member.getEmotions();
-					if(emo.size()>10) {
+					int length=emo.size()-1;
+					if(length>=10) {
 						emo.remove(0);
-						for(String s : emo) {
+						for(int j=length-10;j<length;j++) {
+							String s=emo.get(j);
 							if(s.equalsIgnoreCase("fear") || s.equalsIgnoreCase("angry") || s.equalsIgnoreCase("sad")) {
 								depcount++;
 							}
