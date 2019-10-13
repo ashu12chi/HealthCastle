@@ -18,21 +18,23 @@
 			android:title="Extend exercise database"/>
 		<item
 			android:id="@+id/mobSearch"
-			android:icon="@drawable/ic_person_black_24dp"
+			android:icon="@drawable/ic_person_add_black_24dp"
 			android:title="Add person to family"/>
 		<item
 			android:id="@+id/connection"
-			android:icon="@drawable/ic_person_black_24dp"
+			android:icon="@drawable/ic_people_black_24dp"
 			android:title="View Connection"/>
 		<item
 			android:id="@+id/doctors"
-			android:icon="@drawable/ic_person_black_24dp"
+			android:icon="@drawable/ic_local_hospital_black_24dp"
 			android:title="View data/ Contact doctors"/>
 		<item
 			android:id="@+id/sugar"
+			android:icon="@drawable/ic_local_florist_black_24dp"
 			android:title="Add sugar level" />
 		<item
 			android:id="@+id/bloodpressure"
+			android:icon="@drawable/ic_whatshot_black_24dp"
 			android:title="Add blood pressure level" />
 		<item
 			android:id="@+id/logout"
