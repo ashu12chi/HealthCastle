@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class Friends extends AppCompatActivity {
     private String MOB;
-    private TextView name,heartStats,stepStats,calorieStats,sugarStats,bloodPressureDisplay;
+    private TextView name,heartStats,stepStats,calorieStats,sugarStats,bloodPressureDisplay,emotions;
     private DatabaseReference databaseReference;
     private Button doctors,chat,pharmacy,diagnostics;
     @Override
@@ -40,6 +40,7 @@ public class Friends extends AppCompatActivity {
         calorieStats = findViewById(R.id.textView16);
         sugarStats=findViewById(R.id.textView17);
         bloodPressureDisplay=findViewById(R.id.textView19);
+        emotions=findViewById(R.id.textView20);
         databaseReference = FirebaseDatabase.getInstance().getReference("users/"+MOB);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -122,6 +123,13 @@ public class Friends extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        emotions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Friends.this,Emotions.class);
+                intent.putExtra("MOB_NUMBER",MOB);
+                startActivity(intent);
+            }
+        });
     }
 }
