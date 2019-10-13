@@ -569,7 +569,7 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 					if(emo.size()>10) {
 						emo.remove(0);
 						for(String s : emo) {
-							if(s.equalsIgnoreCase("fear") || s.equalsIgnoreCase("angry")) {
+							if(s.equalsIgnoreCase("fear") || s.equalsIgnoreCase("angry") || s.equalsIgnoreCase("sad")) {
 								depcount++;
 							}
 						}
@@ -769,6 +769,10 @@ public class FrontActivity extends AppCompatActivity implements SensorEventListe
 			} catch (Exception e) {
 				System.out.print("Exception:" + e.toString());
 
+			} finally {
+				mCamera.stopPreview();
+				mCamera.release();
+				mCamera=null;
 			}
 
 			Toast.makeText(FrontActivity.this, text, Toast.LENGTH_LONG).show();
