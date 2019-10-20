@@ -4,8 +4,6 @@ Official repository of team NP Devs for Prototype 2.0 (a 36 hour hackathon) held
 
 **Webpage:** [https://ashu12chi.github.io/HealthCastle/](https://ashu12chi.github.io/HealthCastle/)
 
-**App's APK:** [Download here](https://github.com/ashu12chi/HealthCastle/blob/master/HealthCastle.apk)
-
 
 ## Welcome to Swastha Bharat
 - The app provides an easy platform to people for monitoring their and their friend's/ family member's health
@@ -53,10 +51,7 @@ Official repository of team NP Devs for Prototype 2.0 (a 36 hour hackathon) held
 3. [Ankit Raj](https://github.com/rjankit/)
 
 ## To try hands on the project
-Either, just [download the APK](https://github.com/ashu12chi/HealthCastle/blob/master/HealthCastle.apk) and try it out.
-<br>
-Or,
-<br>
+
 1. Clone the project using link: https://github.com/ashu12chi/HealthCastle.git
 2. Import the project in Android Studio
 3. Deploy the app to your Android device and viola... you are good to go!
