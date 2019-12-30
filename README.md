@@ -1,5 +1,6 @@
 # Health Castle
-
+[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)<br>
 Official repository of team NP Devs for Prototype 2.0 (a 36 hour hackathon) held at IIIT- Allahabad.
 
 **Webpage:** [https://ashu12chi.github.io/HealthCastle/](https://ashu12chi.github.io/HealthCastle/)
