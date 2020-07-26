@@ -56,3 +56,15 @@ Official repository of team NP Devs for Prototype 2.0 (a 36 hour hackathon) held
 1. Clone the project using link: https://github.com/ashu12chi/HealthCastle.git
 2. Import the project in Android Studio
 3. Deploy the app to your Android device and viola... you are good to go!
+
+## Screenshots
+
+|  |  |  |
+|--|--|--|
+|Main Activity ![Main Activity](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/main.jpg?raw=true)|Select Food eaten ![Select Food](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/food_select.jpg?raw=true)|Add amount of food eaten ![Food Measure](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/food_measure.jpg?raw=true)|
+|Select exercise done ![Exercise Select](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/exercise_select.jpg?raw=true)|Enter time spent in exercise ![Exercise Measure](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/exercise_measure.jpg?raw=true)|Measure Heartrate ![Measure heartrate](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/hb_measure.jpg?raw=true)|
+|Add new food item to database ![New Food](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/new_food.jpg?raw=true)|Add new exercise to database ![New Exercise](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/new_exercise.jpg?raw=true)|Record Blood Presure ![Record BP](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/bp.jpg?raw=true)|
+|Add new person to family ![New Person](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/new_person.jpg?raw=true)|Family member details and services ![Member details](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/person.jpg?raw=true)| Family member problem notification ![Notification](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/notification.jpg?raw=true)|
+|Historical graph of steps ![Steps graph](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/graph_steps.jpg?raw=true)|Historical graph of heartrate ![Heartrate graph](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/graph_hb.jpg?raw=true)|Historical graph of calorie intakes ![Calories graph](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/graph_calorie.jpg?raw=true)|
+|Record Sugar level ![Record Sugar](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/sugar.jpg?raw=true)| Historical Sugar level graph ![Sugar graph](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/graph_sugar.jpg?raw=true)|Mood detected toast ![Mood detected](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/happy.jpg?raw=true)|
+|App's Drawer ![Navigation drawer](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/drawer.jpg?raw=true)|App can be navigated via voice controls ![Voice Control](https://github.com/nisiddharth/HealthCastle/raw/master/screenshots/voice.jpg?raw=true)
