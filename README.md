@@ -52,7 +52,7 @@ Official repository of team NP Devs for Prototype 2.0 (a 36 hour hackathon) held
 3. [Ankit Raj](https://github.com/rjankit/)
 
 ## To try hands on the project
-
+Either just try installing the debug APK from [this link](https://drive.google.com/file/d/1aedgRhm36I5aONZsNLgUS3WSrRdAvzzQ/view?usp=sharing); OR:
 1. Clone the project using link: https://github.com/ashu12chi/HealthCastle.git
 2. Import the project in Android Studio
 3. Deploy the app to your Android device and viola... you are good to go!
