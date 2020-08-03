@@ -1,74 +1,74 @@
 package com.npdevs.healthcastle;
 
 public class SampleItem3 {
-    private String sad,angry,fear,happy,neutral,disgust,surprise;
+	private String sad, angry, fear, happy, neutral, disgust, surprise;
 
-    public SampleItem3(String sad, String angry, String fear, String happy, String neutral, String disgust, String surprise) {
-        this.sad = sad;
-        this.angry = angry;
-        this.fear = fear;
-        this.happy = happy;
-        this.neutral = neutral;
-        this.disgust = disgust;
-        this.surprise = surprise;
-    }
+	public SampleItem3(String sad, String angry, String fear, String happy, String neutral, String disgust, String surprise) {
+		this.sad = sad;
+		this.angry = angry;
+		this.fear = fear;
+		this.happy = happy;
+		this.neutral = neutral;
+		this.disgust = disgust;
+		this.surprise = surprise;
+	}
 
-    public String getSad() {
-        return sad;
-    }
+	public SampleItem3() {
+	}
 
-    public void setSad(String sad) {
-        this.sad = sad;
-    }
+	public String getSad() {
+		return sad;
+	}
 
-    public String getAngry() {
-        return angry;
-    }
+	public void setSad(String sad) {
+		this.sad = sad;
+	}
 
-    public void setAngry(String angry) {
-        this.angry = angry;
-    }
+	public String getAngry() {
+		return angry;
+	}
 
-    public String getFear() {
-        return fear;
-    }
+	public void setAngry(String angry) {
+		this.angry = angry;
+	}
 
-    public void setFear(String fear) {
-        this.fear = fear;
-    }
+	public String getFear() {
+		return fear;
+	}
 
-    public String getHappy() {
-        return happy;
-    }
+	public void setFear(String fear) {
+		this.fear = fear;
+	}
 
-    public void setHappy(String happy) {
-        this.happy = happy;
-    }
+	public String getHappy() {
+		return happy;
+	}
 
-    public String getNeutral() {
-        return neutral;
-    }
+	public void setHappy(String happy) {
+		this.happy = happy;
+	}
 
-    public void setNeutral(String neutral) {
-        this.neutral = neutral;
-    }
+	public String getNeutral() {
+		return neutral;
+	}
 
-    public String getDisgust() {
-        return disgust;
-    }
+	public void setNeutral(String neutral) {
+		this.neutral = neutral;
+	}
 
-    public void setDisgust(String disgust) {
-        this.disgust = disgust;
-    }
+	public String getDisgust() {
+		return disgust;
+	}
 
-    public String getSurprise() {
-        return surprise;
-    }
+	public void setDisgust(String disgust) {
+		this.disgust = disgust;
+	}
 
-    public void setSurprise(String surprise) {
-        this.surprise = surprise;
-    }
+	public String getSurprise() {
+		return surprise;
+	}
 
-    public SampleItem3() {
-    }
+	public void setSurprise(String surprise) {
+		this.surprise = surprise;
+	}
 }

@@ -1,9 +1,9 @@
 package com.npdevs.healthcastle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -17,10 +17,10 @@ public class SplashScreen extends AppCompatActivity {
 			public void run() {
 				try {
 					// Thread will sleep for 2 seconds
-					sleep(2*1000);
+					sleep(2 * 1000);
 
 					// After 2 seconds redirect to another intent
-					Intent i=new Intent(getBaseContext(),MainActivity.class);
+					Intent i = new Intent(getBaseContext(), MainActivity.class);
 					startActivity(i);
 
 					//Remove activity

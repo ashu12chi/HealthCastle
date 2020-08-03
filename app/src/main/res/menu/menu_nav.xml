@@ -1,78 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<group android:checkableBehavior="none">
+    <group android:checkableBehavior="none">
 
-		<item
-			android:id="@+id/heartbeat"
-			android:icon="@drawable/ic_bubble_chart_black_24dp"
-			android:title="Measure heartbeat rate"
-			android:checked="true"/>
-		<item
-			android:id="@+id/addfood"
-			android:icon="@drawable/ic_restaurant_black_24dp"
-			android:title="Extend food database"/>
-		<item
-			android:id="@+id/addexercise"
-			android:icon="@drawable/ic_transfer_within_a_station_black_24dp"
-			android:title="Extend exercise database"/>
-		<item
-			android:id="@+id/mobSearch"
-			android:icon="@drawable/ic_person_add_black_24dp"
-			android:title="Add person to family"/>
-		<item
-			android:id="@+id/connection"
-			android:icon="@drawable/ic_people_black_24dp"
-			android:title="View Connection"/>
-		<item
-			android:id="@+id/doctors"
-			android:icon="@drawable/ic_local_hospital_black_24dp"
-			android:title="View data/ Contact doctors"/>
-		<item
-			android:id="@+id/sugar"
-			android:icon="@drawable/ic_local_florist_black_24dp"
-			android:title="Add sugar level" />
-		<item
-			android:id="@+id/bloodpressure"
-			android:icon="@drawable/ic_whatshot_black_24dp"
-			android:title="Add blood pressure level" />
-		<item
-			android:id="@+id/logout"
-			android:icon="@drawable/ic_person_black_24dp"
-			android:title="Logout"/>
-	</group>
-	<item android:title="Stats">
-		<menu>
-			<item
-				android:id="@+id/heartbeatstats"
-				android:icon="@drawable/ic_add_black_24dp"
-				android:title="Heartbeat stats"/>
-			<item
-				android:id="@+id/stepsstats"
-				android:icon="@drawable/ic_directions_walk_black_24dp"
-				android:title="Steps stats" />
-			<item
-				android:id="@+id/caloriestats"
-				android:icon="@drawable/ic_restaurant_black_24dp"
-				android:title="Calories stats" />
-			<item
-				android:id="@+id/sugarstats"
-				android:icon="@drawable/ic_restaurant_black_24dp"
-				android:title="Sugar level stats" />
-		</menu>
-	</item>
+        <item
+            android:id="@+id/heartbeat"
+            android:checked="true"
+            android:icon="@drawable/ic_bubble_chart_black_24dp"
+            android:title="Measure heartbeat rate" />
+        <item
+            android:id="@+id/addfood"
+            android:icon="@drawable/ic_restaurant_black_24dp"
+            android:title="Extend food database" />
+        <item
+            android:id="@+id/addexercise"
+            android:icon="@drawable/ic_transfer_within_a_station_black_24dp"
+            android:title="Extend exercise database" />
+        <item
+            android:id="@+id/mobSearch"
+            android:icon="@drawable/ic_person_add_black_24dp"
+            android:title="Add person to family" />
+        <item
+            android:id="@+id/connection"
+            android:icon="@drawable/ic_people_black_24dp"
+            android:title="View Connection" />
+        <item
+            android:id="@+id/doctors"
+            android:icon="@drawable/ic_local_hospital_black_24dp"
+            android:title="View data/ Contact doctors" />
+        <item
+            android:id="@+id/sugar"
+            android:icon="@drawable/ic_local_florist_black_24dp"
+            android:title="Add sugar level" />
+        <item
+            android:id="@+id/bloodpressure"
+            android:icon="@drawable/ic_whatshot_black_24dp"
+            android:title="Add blood pressure level" />
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="Logout" />
+    </group>
+    <item android:title="Stats">
+        <menu>
+            <item
+                android:id="@+id/heartbeatstats"
+                android:icon="@drawable/ic_add_black_24dp"
+                android:title="Heartbeat stats" />
+            <item
+                android:id="@+id/stepsstats"
+                android:icon="@drawable/ic_directions_walk_black_24dp"
+                android:title="Steps stats" />
+            <item
+                android:id="@+id/caloriestats"
+                android:icon="@drawable/ic_restaurant_black_24dp"
+                android:title="Calories stats" />
+            <item
+                android:id="@+id/sugarstats"
+                android:icon="@drawable/ic_restaurant_black_24dp"
+                android:title="Sugar level stats" />
+        </menu>
+    </item>
 
-	<item android:title="Support">
-		<menu>
-			<item
-				android:id="@+id/contact"
-				android:icon="@drawable/ic_perm_contact_calendar_black_24dp"
-				android:title="About App" />
-			<item
-				android:id="@+id/feedback"
-				android:icon="@drawable/ic_feedback_black_24dp"
-				android:title="Give us feedback" />
-		</menu>
-	</item>
+    <item android:title="Support">
+        <menu>
+            <item
+                android:id="@+id/contact"
+                android:icon="@drawable/ic_perm_contact_calendar_black_24dp"
+                android:title="About App" />
+            <item
+                android:id="@+id/feedback"
+                android:icon="@drawable/ic_feedback_black_24dp"
+                android:title="Give us feedback" />
+        </menu>
+    </item>
 
 </menu>

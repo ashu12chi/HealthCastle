@@ -1,74 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.npdevs.healthcastle">
+    package="com.npdevs.healthcastle">
 
-	<uses-feature
-		android:name="android.hardware.sensor.stepcounter"
-		android:required="true" />
+    <uses-feature
+        android:name="android.hardware.sensor.stepcounter"
+        android:required="true" />
 
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
-	<uses-permission android:name="android.permission.CAMERA"/>
-	<uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
-	<uses-permission android:name="android.hardware.sensor.stepcounter" />
-	<uses-permission android:name="android.hardware.sensor.stepdetector" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-	<uses-feature android:name="android.hardware.camera" android:required="true"/>
-	<uses-feature android:name="android.hardware.camera.flash" android:required="true" />
-	<uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.hardware.sensor.stepcounter" />
+    <uses-permission android:name="android.hardware.sensor.stepdetector" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-	<application
-		android:allowBackup="true"
-		android:icon="@mipmap/ic_launcher"
-		android:label="@string/app_name"
-		android:roundIcon="@mipmap/ic_launcher_round"
-		android:supportsRtl="true"
-		android:theme="@style/AppTheme">
-		<activity android:name=".SplashScreen">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="true" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-		</activity>
-		<activity android:name=".Emotions" />
-		<activity android:name=".SugarLevelGraph" />
-		<activity android:name=".BloodpressureMeasure" />
-		<activity android:name=".SugarMeasure" />
-		<activity android:name=".Friends" />
-		<activity android:name=".Connections" />
-		<activity android:name=".EditProfile" />
-		<activity android:name=".PhoneSearch" />
-		<activity android:name=".StepsGraph" />
-		<activity android:name=".CalorieGraph" />
-		<activity android:name=".AddNewExercise" />
-		<activity android:name=".AddNewFood" />
-		<activity android:name=".CheckSafeSearch" />
-		<activity android:name=".AddFoodSearch" />
-		<activity android:name=".AddFood" />
-		<activity android:name=".AddExerciseSearch" />
-		<activity android:name=".AddExercise" />
-		<activity android:name=".HeartGraph" />
-		<activity android:name=".About" />
-		<activity android:name=".CheckSafe" />
-		<activity android:name=".HeartMeter" />
-		<activity android:name=".FrontActivity" />
-		<activity android:name=".SignUp" />
-		<activity android:name=".MainActivity">
-		</activity>
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".SplashScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-		<receiver
-			android:name=".AlarmReciever"
-			android:process=":remote" />
-		<receiver android:name=".BootWakeUp">
-			<intent-filter>
-				<action android:name="android.intent.action.BOOT_COMPLETED" />
-			</intent-filter>
-		</receiver>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Emotions" />
+        <activity android:name=".SugarLevelGraph" />
+        <activity android:name=".BloodpressureMeasure" />
+        <activity android:name=".SugarMeasure" />
+        <activity android:name=".Friends" />
+        <activity android:name=".Connections" />
+        <activity android:name=".EditProfile" />
+        <activity android:name=".PhoneSearch" />
+        <activity android:name=".StepsGraph" />
+        <activity android:name=".CalorieGraph" />
+        <activity android:name=".AddNewExercise" />
+        <activity android:name=".AddNewFood" />
+        <activity android:name=".CheckSafeSearch" />
+        <activity android:name=".AddFoodSearch" />
+        <activity android:name=".AddFood" />
+        <activity android:name=".AddExerciseSearch" />
+        <activity android:name=".AddExercise" />
+        <activity android:name=".HeartGraph" />
+        <activity android:name=".About" />
+        <activity android:name=".CheckSafe" />
+        <activity android:name=".HeartMeter" />
+        <activity android:name=".FrontActivity" />
+        <activity android:name=".SignUp" />
+        <activity android:name=".MainActivity"></activity>
 
-		<service
-			android:name=".push_notification"
-			android:exported="false" />
-	</application>
+        <receiver
+            android:name=".AlarmReciever"
+            android:process=":remote" />
+        <receiver android:name=".BootWakeUp">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".push_notification"
+            android:exported="false" />
+    </application>
 
 </manifest>

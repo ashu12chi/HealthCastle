@@ -1,10 +1,7 @@
 package com.npdevs.healthcastle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.hardware.Camera;
@@ -14,9 +11,10 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -25,105 +23,21 @@ public class HeartMeter extends AppCompatActivity {
 
 	private static final String TAG = "HeartRateMonitor";
 	private static final AtomicBoolean processing = new AtomicBoolean(false);
-
+	private static final int averageArraySize = 4;
+	private static final int[] averageArray = new int[averageArraySize];
+	private static final int beatsArraySize = 3;
+	private static final int[] beatsArray = new int[beatsArraySize];
 	private static SurfaceView preview = null;
 	private static SurfaceHolder previewHolder = null;
 	private static Camera camera = null;
 	private static View image = null;
 	private static TextView text = null;
-
 	private static PowerManager.WakeLock wakeLock = null;
-
 	private static int averageIndex = 0;
-	private static final int averageArraySize = 4;
-	private static final int[] averageArray = new int[averageArraySize];
-
-	public enum TYPE {
-		GREEN, RED
-	}
-
 	private static TYPE currentType = TYPE.GREEN;
-
-	public static TYPE getCurrent() {
-		return currentType;
-	}
-
 	private static int beatsIndex = 0;
-	private static final int beatsArraySize = 3;
-	private static final int[] beatsArray = new int[beatsArraySize];
 	private static double beats = 0;
 	private static long startTime = 0;
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@SuppressLint("InvalidWakeLockTag")
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_heart_meter);
-
-		preview = findViewById(R.id.preview);
-		previewHolder = preview.getHolder();
-		previewHolder.addCallback(surfaceCallback);
-		previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-
-		image = findViewById(R.id.image);
-		text = findViewById(R.id.text);
-
-		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		assert pm != null;
-		wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "DoNotDimScreen");
-		findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				String beats=text.getText().toString();
-				Toast.makeText(HeartMeter.this,"Heartrate: "+beats,Toast.LENGTH_LONG).show();
-				clearTable();
-				saveTable(beats);
-				finish();
-			}
-		});
-
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void onResume() {
-		super.onResume();
-
-		wakeLock.acquire();
-
-		camera = Camera.open();
-
-		startTime = System.currentTimeMillis();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void onPause() {
-		super.onPause();
-
-		wakeLock.release();
-
-		camera.setPreviewCallback(null);
-		camera.stopPreview();
-		camera.release();
-		camera = null;
-	}
-
 	private static Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
 
 		/**
@@ -213,7 +127,6 @@ public class HeartMeter extends AppCompatActivity {
 			processing.set(false);
 		}
 	};
-
 	private static SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
 
 		/**
@@ -254,6 +167,10 @@ public class HeartMeter extends AppCompatActivity {
 		}
 	};
 
+	public static TYPE getCurrent() {
+		return currentType;
+	}
+
 	private static Camera.Size getSmallestPreviewSize(int width, int height, Camera.Parameters parameters) {
 		Camera.Size result = null;
 
@@ -272,19 +189,92 @@ public class HeartMeter extends AppCompatActivity {
 
 		return result;
 	}
-	private void clearTable()
-	{
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@SuppressLint("InvalidWakeLockTag")
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_heart_meter);
+
+		preview = findViewById(R.id.preview);
+		previewHolder = preview.getHolder();
+		previewHolder.addCallback(surfaceCallback);
+		previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+
+		image = findViewById(R.id.image);
+		text = findViewById(R.id.text);
+
+		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		assert pm != null;
+		wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "DoNotDimScreen");
+		findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String beats = text.getText().toString();
+				Toast.makeText(HeartMeter.this, "Heartrate: " + beats, Toast.LENGTH_LONG).show();
+				clearTable();
+				saveTable(beats);
+				finish();
+			}
+		});
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		wakeLock.acquire();
+
+		camera = Camera.open();
+
+		startTime = System.currentTimeMillis();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		wakeLock.release();
+
+		camera.setPreviewCallback(null);
+		camera.stopPreview();
+		camera.release();
+		camera = null;
+	}
+
+	private void clearTable() {
 		SharedPreferences preferences = getSharedPreferences("heartbeats", Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.clear();
 		editor.commit();
 	}
 
-	private void saveTable(String beats)
-	{
-		SharedPreferences sharedPreferences=getSharedPreferences("heartbeats",MODE_PRIVATE);
-		SharedPreferences.Editor editor=sharedPreferences.edit();
-		editor.putString("beats",beats);
+	private void saveTable(String beats) {
+		SharedPreferences sharedPreferences = getSharedPreferences("heartbeats", MODE_PRIVATE);
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putString("beats", beats);
 		editor.apply();
+	}
+
+	public enum TYPE {
+		GREEN, RED
 	}
 }

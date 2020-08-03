@@ -1,29 +1,29 @@
 package com.npdevs.healthcastle;
 
 public class SampleItem2 {
-    private String mob,name;
+	private String mob, name;
 
-    public String getMob() {
-        return mob;
-    }
+	public SampleItem2() {
+	}
 
-    public void setMob(String mob) {
-        this.mob = mob;
-    }
+	public SampleItem2(String mob, String name) {
+		this.mob = mob;
+		this.name = name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getMob() {
+		return mob;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setMob(String mob) {
+		this.mob = mob;
+	}
 
-    public SampleItem2() {
-    }
+	public String getName() {
+		return name;
+	}
 
-    public SampleItem2(String mob, String name) {
-        this.mob = mob;
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 }

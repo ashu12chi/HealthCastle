@@ -3,10 +3,10 @@ package com.npdevs.healthcastle;
 import java.util.ArrayList;
 
 public class Users {
-	private String name,mob,password,city;
-	private int age,weight,height,sex;
-	private ArrayList<Integer> steps,calorie,heartbeat,sugar;
-	private ArrayList<String> family,bloodpressure,emotions;
+	private String name, mob, password, city;
+	private int age, weight, height, sex;
+	private ArrayList<Integer> steps, calorie, heartbeat, sugar;
+	private ArrayList<String> family, bloodpressure, emotions;
 
 	public Users() {
 	}
@@ -22,11 +22,11 @@ public class Users {
 		this.steps = steps;
 		this.calorie = calorie;
 		this.heartbeat = heartbeat;
-		this.family=family;
-		this.bloodpressure=bloodpressure;
-		this.sugar=sugar;
-		this.city=city;
-		this.emotions=emotions;
+		this.family = family;
+		this.bloodpressure = bloodpressure;
+		this.sugar = sugar;
+		this.city = city;
+		this.emotions = emotions;
 	}
 
 	public ArrayList<String> getEmotions() {

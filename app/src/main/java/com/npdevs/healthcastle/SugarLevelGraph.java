@@ -1,11 +1,11 @@
 package com.npdevs.healthcastle;
 
+import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-
-import android.os.Bundle;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -31,20 +31,20 @@ public class SugarLevelGraph extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sugar_level_graph);
 
-		MOB_NUMBER=getIntent().getStringExtra("MOB_NUMBER");
+		MOB_NUMBER = getIntent().getStringExtra("MOB_NUMBER");
 
-		DatabaseReference myRef= FirebaseDatabase.getInstance().getReference("users/"+MOB_NUMBER);
+		DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("users/" + MOB_NUMBER);
 		myRef.addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-				Users user=dataSnapshot.getValue(Users.class);
-				ArrayList<Entry> entries=new ArrayList<>();
+				Users user = dataSnapshot.getValue(Users.class);
+				ArrayList<Entry> entries = new ArrayList<>();
 				assert user != null;
-				ArrayList<Integer> data=user.getSugar();
-				for(int i=1;i<data.size();i++) {
-					entries.add(new Entry(i-1,data.get(i)));
+				ArrayList<Integer> data = user.getSugar();
+				for (int i = 1; i < data.size(); i++) {
+					entries.add(new Entry(i - 1, data.get(i)));
 				}
-				if(entries.size()>=2) {
+				if (entries.size() >= 2) {
 					LineDataSet dataSet = new LineDataSet(entries, "Sugar level values");
 					dataSet.setColor(ContextCompat.getColor(SugarLevelGraph.this, R.color.colorPrimary));
 					dataSet.setValueTextColor(ContextCompat.getColor(SugarLevelGraph.this, R.color.colorPrimaryDark));
@@ -92,7 +92,7 @@ public class SugarLevelGraph extends AppCompatActivity {
 
 			@Override
 			public void onCancelled(@NonNull DatabaseError databaseError) {
-				Toast.makeText(SugarLevelGraph.this,"Sorry, attempt failed!", Toast.LENGTH_LONG).show();
+				Toast.makeText(SugarLevelGraph.this, "Sorry, attempt failed!", Toast.LENGTH_LONG).show();
 			}
 		});
 	}
